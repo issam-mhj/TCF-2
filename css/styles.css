@@ -13,6 +13,7 @@ body {
 }
 
 .quiz-container {
+    display: none;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 40px;
     border-radius: 20px;
@@ -116,15 +117,15 @@ body {
     transform: translateY(-3px);
 }
 
-.answer-button.correct {
+/* .answer-button.correct {
     background-color: #28a745 !important;
     color: #ffffff;
-}
+} */
 
-.answer-button.incorrect {
+/* .answer-button.incorrect {
     background-color: #dc3545 !important;
     color: #ffffff;
-}
+} */
 
 /* Result Section */
 .result-card {
