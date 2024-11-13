@@ -1309,7 +1309,6 @@ const questions = [
             question: "Elle aime la musique. (Exprimez la négation)",
             categ: "Grammaire",
             NV: "A1",
-
             option1: "Elle non aime la musique. ",
             option2: "Elle ne aime pas la musique.",
             option3: " Elle n'aime pas la musique.",
@@ -1828,4 +1827,7 @@ const questions = [
             correctOption: "acceptera"
         },
     ]
-]
+];
+
+
+export { questions };
