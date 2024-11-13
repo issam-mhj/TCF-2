@@ -1,6 +1,3 @@
-# TCF-2
-
-#Omar
 # Ultimate French Language Quiz Application
 
 ## Overview

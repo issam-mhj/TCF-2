@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const questions = [
         {
             question: "Quel est l'équivalent de l'expression 'avoir faim' en anglais ?",
+
             answers: [
                 { text: "To be hungry", correct: true },
                 { text: "To be thirsty", correct: false },
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setStatusClass(element, correct) {
         clearStatusClass(element);
-        if (correct) {
+        if (correct ) {
             element.classList.add('correct');
         } else {
             element.classList.add('incorrect');
