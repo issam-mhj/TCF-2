@@ -5,330 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ultimate French Language Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <style>
       body {
-        font-family: "Poppins", sans-serif;
-      }
-      .gradient-bg {
-        background: linear-gradient(to bottom right, #6a0dad, #0078ff);
-        min-height: 100vh;
-      }
-
-      .sidebar {
-        min-height: 100vh;
-        width: 16rem;
-        background: #0a1931;
-        color: white;
-        padding: 1.5rem;
-      }
-
-      .level-button {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        font-weight: bold;
-        text-align: center;
-        line-height: 3rem;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .level-locked {
-        background-color: #888; /* Grey for locked level */
-        cursor: not-allowed;
-      }
-
-      .level-unlocked {
-        background-color: #00ff00; /* Green for unlocked level */
-      }
-
-      .category-label {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 0;
-      }
-
-      .category-valid {
-        color: #00ff00; /* Green checkmark for completed category */
-      }
-
-      .category-invalid {
-        color: #ff0000; /* Red cross for incomplete category */
+        font-family: 'Poppins', sans-serif;
       }
     </style>
   </head>
 
-  <body
-    class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-purple-600"
-  >
+  <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-purple-600">
+
     <!-- Login and Sign Up Card Section -->
-    <div
-      id="logOrSign"
-      class="bg-white bg-opacity-10 p-8 backdrop-blur-md rounded-3xl max-w-sm text-center shadow-lg"
-    >
+    <div id="logOrSign" class="bg-white bg-opacity-10 p-8 backdrop-blur-md rounded-3xl max-w-sm text-center shadow-lg">
       <h1 class="text-white font-bold text-3xl mb-8">French Quiz TCF</h1>
       <div class="flex flex-col items-center">
-        <button
-          onclick="showLogin()"
-          class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 mb-4 transform transition duration-300 hover:bg-yellow-300 hover:scale-105"
-        >
+        <button onclick="showLogin()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 mb-4 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
           Login
         </button>
-        <button
-          onclick="showSignUp()"
-          class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 transform transition duration-300 hover:bg-yellow-300 hover:scale-105"
-        >
+        <button onclick="showSignUp()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
           Sign Up
         </button>
       </div>
     </div>
 
     <!-- Sign Up Section -->
-    <div
-      id="signUP"
-      class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center"
-    >
+    <div id="signUP" class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center">
       <h1 class="text-3xl font-semibold mb-6">Sign Up</h1>
       <div class="mb-6">
-        <input
-          type="text"
-          placeholder="Username"
-          id="userName"
-          required
-          class="w-full py-3 px-4 rounded-lg text-gray-800"
-        />
+        <input id="signupUsername" type="text" placeholder="Username" required class="w-full py-3 px-4 rounded-lg text-gray-800" />
       </div>
       <div class="flex justify-center gap-4">
-        <button
-          onclick="backToMain()"
-          class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition"
-        >
+        <button onclick="backToMain()" class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition">
           Back
         </button>
-        <button
-          class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition"
-          id="btnSignUP"
-        >
+        <button onclick="signUpUser()" class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition">
           Sign Up
         </button>
       </div>
     </div>
 
     <!-- Login Section -->
-    <div
-      id="signIN"
-      class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center"
-    >
+    <div id="signIN" class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center">
       <h1 class="text-3xl font-semibold mb-6">Login</h1>
       <div class="mb-6">
-        <input
-          type="text"
-          placeholder="Username"
-          required
-          class="w-full py-3 px-4 rounded-lg text-gray-800"
-        />
+        <input id="loginUsername" type="text" placeholder="Username" required class="w-full py-3 px-4 rounded-lg text-gray-800" />
       </div>
       <div class="flex justify-center gap-4">
-        <button
-          onclick="backToMain()"
-          class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition"
-        >
+        <button onclick="backToMain()" class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition">
           Back
         </button>
-        <button
-          class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition"
-        >
+        <button onclick="loginUser()" class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition">
           Login
         </button>
       </div>
     </div>
-    <!-- END LOGIN  -->
 
-    <!-- QUIZ  -->
-    <div id="app" class="quiz-container">
-      <header class="quiz-header">
-        <h1 class="quiz-title">French Quiz TCF</h1>
-      </header>
-      <main class="quiz-main">
-        <section id="intro-section" class="intro-section">
-          <div class="intro-card">
-            <p class="intro-text">
-              Test your French language skills with our engaging quiz. Click the
-              button below to start and discover your proficiency level!
-            </p>
-            <button id="start-quiz" class="button start-quiz-button">
-              Start Quiz
-            </button>
-          </div>
-        </section>
-        <section id="question-section" class="hidden question-section">
-          <div class="question-card">
-            <div id="question-status" class="question-status"></div>
-            <div id="question-text" class="question-text"></div>
-            <div id="answers-container" class="answers-container"></div>
-            <button
-              id="next-question"
-              class="button next-question-button hidden"
-            >
-              Next Question
-            </button>
-          </div>
-        </section>
-        <section id="result-section" class="hidden result-section">
-          <div class="result-card">
-            <div class="result-summary">
-              <h2 id="final-score" class="final-score-text"></h2>
-              <p id="level-description" class="level-description"></p>
-            </div>
-            <button id="restart-quiz" class="button restart-quiz-button">
-              Restart Quiz
-            </button>
-          </div>
-        </section>
-      </main>
-    </div>
-    <!-- user interface -->
-    <div class=" flex hidden" id="userInterface">
-      <!-- Sidebar Section -->
-      <aside class="sidebar">
-        <h2 class="text-xl font-bold mb-6" id="username">
-          Utilisateur: Invité
-        </h2>
-
-        <!-- Niveau Section -->
-        <div class="mb-8">
-          <h3 class="text-lg font-semibold mb-4">Niveau</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <button
-              id="levelA1"
-              onclick="selectLevel('A1')"
-              class="level-button level-unlocked"
-            >
-              A1
-            </button>
-            <button
-              id="levelA2"
-              onclick="selectLevel('A2')"
-              class="level-button level-locked"
-            >
-              A2
-            </button>
-            <button
-              id="levelB1"
-              onclick="selectLevel('B1')"
-              class="level-button level-locked"
-            >
-              B1
-            </button>
-            <button
-              id="levelB2"
-              onclick="selectLevel('B2')"
-              class="level-button level-locked"
-            >
-              B2
-            </button>
-            <button
-              id="levelC1"
-              onclick="selectLevel('C1')"
-              class="level-button level-locked"
-            >
-              C1
-            </button>
-            <button
-              id="levelC2"
-              onclick="selectLevel('C2')"
-              class="level-button level-locked"
-            >
-              C2
-            </button>
-          </div>
-        </div>
-
-        <!-- Catégorie Section -->
-        <div class="mb-8">
-          <h3 class="text-lg font-semibold mb-4">Catégorie</h3>
-          <div class="category-label">
-            <span>Grammaire</span>
-            <span id="categoryGrammaire" class="category-invalid">❌</span>
-          </div>
-          <div class="category-label">
-            <span>Vocabulaire</span>
-            <span id="categoryVocabulaire" class="category-invalid">❌</span>
-          </div>
-          <div class="category-label">
-            <span>Compréhension</span>
-            <span id="categoryCompréhension" class="category-invalid">❌</span>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Main Content Section -->
-      <section id="mainContent" class="flex-grow p-10">
-        <!-- Welcome Card -->
-        <div
-          id="welcomeCard"
-          class="w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center"
-        >
-          <h2 class="text-3xl font-bold mb-6">Bienvenue sur le Quiz TCF</h2>
-          <p class="mb-6">Choisissez une catégorie pour commencer le quiz !</p>
-          <button
-            onclick="chooseCategory()"
-            class="bg-green-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-green-600 transition"
-          >
-            Choisir une Catégorie
-          </button>
-        </div>
-
-        <!-- Category Selection -->
-        <div
-          id="categorySelection"
-          class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center"
-        >
-          <h2 class="text-3xl font-bold mb-6">
-            📝 Sélection de la Catégorie de Quiz
-          </h2>
-          <div class="space-y-4">
-            <button
-              onclick="selectCategory('Grammaire')"
-              class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition"
-            >
-              📘 Grammaire
-            </button>
-            <button
-              onclick="selectCategory('Vocabulaire')"
-              class="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition"
-            >
-              📚 Vocabulaire
-            </button>
-            <button
-              onclick="selectCategory('Compréhension')"
-              class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition"
-            >
-              🔍 Compréhension
-            </button>
-          </div>
-        </div>
-
-        <!-- Quiz Question -->
-        <div
-          id="quizQuestion"
-          class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center"
-        >
-          <h1 class="text-3xl font-bold mb-4">Question de Quiz</h1>
-          <p id="questionCount" class="text-sm mb-4">Question 1 of 10</p>
-          <p id="questionText" class="text-xl font-medium mb-8"></p>
-          <div id="answers" class="grid grid-cols-2 gap-4"></div>
-        </div>
-      </section>
-    </div>
-
-    <script src="js/script.js"></script>
     <script src="js/first.js"></script>
   </body>
 </html>
