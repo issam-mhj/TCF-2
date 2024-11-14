@@ -1,5 +1,4 @@
 const questions = [
-    [
         {
             question: "Comment dit-on 'cat' en français ?",
             option1: "Chien",
@@ -1828,7 +1827,29 @@ const questions = [
             correctOption: "acceptera"
         },
     ]
-]
+
+
+const local = window.localStorage;
+for(let i=0;i<questions.length;i++){
+    let ques = questions[i].question;
+    let categ = questions[i].categ;
+    let nv = questions[i].NV;
+    let op1 = questions[i].option1;
+    let op2 = questions[i].option2;
+    let op3 = questions[i].option3;
+    let op4 = questions[i].option4;
+    let correctop = questions[i].correctOption;
+    local.setItem(`questions${i}`, ques);
+    local.setItem(`category${i}`, categ);
+    local.setItem(`niveau${i}`, nv);
+    local.setItem(`option1${i}`, op1);
+    local.setItem(`option2${i}`, op2);
+    local.setItem(`option3${i}`, op3);
+    local.setItem(`opt4${i}`, op4);
+    local.setItem(`correctoption${i}`, correctop);
+}
+console.log(questions.length);
+
 
 function navigate(section) {
     document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
@@ -1838,6 +1859,9 @@ function navigate(section) {
 function displayAddQuestionForm() {
     document.getElementById('addQuestionForm').classList.toggle('hidden');
 }
+renderQuestions();
+
+let question;
 
 function saveQuestion() {
     const questionText = document.getElementById('newQuestionText').value;
@@ -1850,7 +1874,7 @@ function saveQuestion() {
     let op4 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
 
     if (questionText && level && category && correctAnswer) {
-        const question = {
+        question = {
         question: questionText,
         option1: op1,
         option2: op2,
@@ -1861,6 +1885,23 @@ function saveQuestion() {
         NV: level,
       }
       questions.push(question);
+      let ques = question.question;
+      let categ = question.categ;
+      let nv = question.NV;
+      let opt1 = question.option1;
+      let opt2 = question.option2;
+      let opt3 = question.option3;
+      let opt4 = question.option4;
+      let correctop = question.correctOption;
+      local.setItem(`questions${questions.length}`, ques);
+      local.setItem(`category${questions.length}`, categ);
+      local.setItem(`niveau${questions.length}`, nv);
+      local.setItem(`option1${questions.length}`, opt1);
+      local.setItem(`option2${questions.length}`, opt2);
+      local.setItem(`option3${questions.length}`, opt3);
+      local.setItem(`opt4${questions.length}`, opt4);
+      local.setItem(`correctoption${questions.length}`, correctop);
+      console.log(questions.length);
     }else {
      alert('Veuillez remplir tous les champs.');
     }
