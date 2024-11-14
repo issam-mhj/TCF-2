@@ -1911,22 +1911,52 @@ function saveQuestion() {
     renderQuestions();
 };
 
-  
 
-  function renderQuestions() {
+function renderQuestions() {
     const questionsListDiv = document.getElementById('questionsList');
     questionsListDiv.innerHTML = '';
 
-    questions.forEach((question, index) => {
-    const questionHtml = `
-        <div class="p-4 border mb-4 rounded-lg shadow-md">
-            <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
-            <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
-        </div>
-    `;
-    questionsListDiv.innerHTML += questionHtml;
+    const questionsList = [];
+
+    const numberOfQuestions = localStorage.length / 8; 
+
+    for (let i = 0; i < numberOfQuestions; i++) {
+        const question = {
+            question: localStorage.getItem(`questions${i}`),
+            categ: localStorage.getItem(`category${i}`),
+            NV: localStorage.getItem(`niveau${i}`),
+            option1: localStorage.getItem(`option1${i}`),
+            option2: localStorage.getItem(`option2${i}`),
+            option3: localStorage.getItem(`option3${i}`),
+            option4: localStorage.getItem(`opt4${i}`),
+            correctOption: localStorage.getItem(`correctoption${i}`)
+        };
+        questionsList.push(question);
+    }
+
+    questionsList.forEach((question, index) => {
+        const questionHtml = `
+            <div class="p-4 border mb-4 rounded-lg shadow-md">
+                <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
+                <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
+                <button onclick="modifyQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+            </div>
+        `;
+        questionsListDiv.innerHTML += questionHtml;
     });
 }
+
+function deleteQuestion(index) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
+        questions.splice(index, 1);
+        renderQuestions();
+    }
+  }
+
+function modifyQuestion(index){
+    console.log("modifying")
+}
+
 
 function deleteQuestion(index) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
