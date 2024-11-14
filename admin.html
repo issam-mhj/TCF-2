@@ -24,7 +24,7 @@
   <!-- Sidebar Section -->
   <aside class="sidebar text-white flex flex-col p-6">
     <h2 class="text-2xl font-bold mb-8">Administrateur</h2>
-    <button onclick="navigate('manageQuestions')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 mb-4">🛠 Gestion des Questions</button>
+    <button onclick="navigate('manageQuestions')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 mb-4" id="gestionQuestion">🛠 Gestion des Questions</button>
     <button onclick="navigate('userScores')" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 mb-4">📊 Tableau des Scores</button>
     <button onclick="navigate('generalStats')" class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 mb-4">📈 Statistiques Générales</button>
     <button onclick="navigate('generateReports')" class="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 mt-auto">📄 Générer Rapports</button>
@@ -103,158 +103,12 @@
     <div id="generateReports" class="hidden w-full max-w-3xl mx-auto p-10 bg-white rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold mb-6">📄 Génération de Rapports PDF</h2>
       <input type="text" id="pdfUsername" placeholder="Nom d'utilisateur" class="w-full px-4 py-2 border rounded-lg mb-4">
-      <button onclick="generatePDFReport()" class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600">Générer Rapport</button>
+      <button onclick="generatePDFReport()" class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600" id="pdf">Générer Rapport</button>
     </div>
   </section>
 
   <!-- JavaScript -->
-  <script>
-    // Load Data from Local Storage
-    let questions = JSON.parse(localStorage.getItem("questions")) || [];
-    let userScores = JSON.parse(localStorage.getItem("userScores")) || [];
-
-    // Admin Navigation
-    function navigate(section) {
-      document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
-      document.getElementById(section).classList.remove('hidden');
-    }
-
-    // Add Question Functions
-    function displayAddQuestionForm() {
-      document.getElementById('addQuestionForm').classList.toggle('hidden');
-    }
-
-    function saveQuestion() {
-      const questionText = document.getElementById('newQuestionText').value;
-      const level = document.getElementById('newQuestionLevel').value;
-      const category = document.getElementById('newQuestionCategory').value;
-      const correctAnswer = document.getElementById('correctAnswer').value;
-
-      if (questionText && level && category && correctAnswer) {
-        const question = {
-          text: questionText,
-          level: level,
-          category: category,
-          answers: [
-            document.querySelectorAll('#newQuestionAnswers input')[0].value,
-            document.querySelectorAll('#newQuestionAnswers input')[1].value,
-            document.querySelectorAll('#newQuestionAnswers input')[2].value,
-            document.querySelectorAll('#newQuestionAnswers input')[3].value
-          ],
-          correct: correctAnswer
-        };
-
-        questions.push(question);
-        localStorage.setItem("questions", JSON.stringify(questions));
-        alert('Question ajoutée avec succès!');
-        document.getElementById('addQuestionForm').classList.add('hidden');
-        renderQuestions();
-      } else {
-        alert('Veuillez remplir tous les champs.');
-      }
-    }
-
-    function renderQuestions() {
-      const questionsListDiv = document.getElementById('questionsList');
-      questionsListDiv.innerHTML = '';
-
-      questions.forEach((question, index) => {
-        const questionHtml = `
-          <div class="p-4 border mb-4 rounded-lg shadow-md">
-            <p class="text-lg font-bold">${question.level} - ${question.category}: ${question.text}</p>
-            <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
-          </div>
-        `;
-        questionsListDiv.innerHTML += questionHtml;
-      });
-    }
-
-    function deleteQuestion(index) {
-      if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
-        questions.splice(index, 1);
-        localStorage.setItem("questions", JSON.stringify(questions));
-        renderQuestions();
-      }
-    }
-
-    // User Scores Functions
-    function searchUser() {
-      const searchTerm = document.getElementById('searchUser').value.toLowerCase();
-      const filteredScores = userScores.filter(user => user.username.toLowerCase().includes(searchTerm));
-      renderUserScores(filteredScores);
-    }
-
-    function renderUserScores(filteredScores = userScores) {
-      const userScoresList = document.getElementById('userScoresList');
-      userScoresList.innerHTML = '';
-
-      filteredScores.forEach(user => {
-        const row = `
-          <tr>
-            <td class="p-2 border">${user.username}</td>
-            <td class="p-2 border">${user.level}</td>
-            <td class="p-2 border">${user.score}</td>
-            <td class="p-2 border">${user.date || "N/A"}</td>
-          </tr>
-        `;
-        userScoresList.innerHTML += row;
-      });
-    }
-
-    // General Stats Functions
-    function renderGlobalStats() {
-      let totalScore = 0;
-      let totalAttempts = userScores.length;
-
-      userScores.forEach(user => {
-        totalScore += user.score;
-      });
-
-      let successRate = totalAttempts > 0 ? (totalScore / (totalAttempts * 10)) * 100 : 0;
-      document.getElementById('successRate').textContent = `${successRate.toFixed(2)}%`;
-
-      let attemptsByLevel = {};
-      userScores.forEach(user => {
-        if (!attemptsByLevel[user.level]) {
-          attemptsByLevel[user.level] = 0;
-        }
-        attemptsByLevel[user.level]++;
-      });
-
-      document.getElementById('attemptsByLevel').textContent = JSON.stringify(attemptsByLevel);
-    }
-
-    // PDF Generation for Individual User
-    function generatePDFReport() {
-      const { jsPDF } = window.jspdf;
-
-      const username = document.getElementById('pdfUsername').value;
-      const user = userScores.find(u => u.username.toLowerCase() === username.toLowerCase());
-
-      if (user) {
-        const doc = new jsPDF();
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        doc.text(`Rapport de ${user.username}`, 20, 20);
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(12);
-        doc.text(`Niveau: ${user.level}`, 20, 40);
-        doc.text(`Score Total: ${user.score}`, 20, 50);
-
-        doc.save(`rapport_${user.username}.pdf`);
-      } else {
-        alert('Utilisateur non trouvé.');
-      }
-    }
-
-    // Initial loading
-    document.addEventListener("DOMContentLoaded", () => {
-      renderQuestions();
-      renderUserScores();
-      renderGlobalStats();
-    });
+  <script src="js/tests.js" >
   </script>
 </body>
 </html>

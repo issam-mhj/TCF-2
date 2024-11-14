@@ -1829,3 +1829,68 @@ const questions = [
         },
     ]
 ]
+
+function navigate(section) {
+    document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
+    document.getElementById(section).classList.remove('hidden');
+    }
+
+function displayAddQuestionForm() {
+    document.getElementById('addQuestionForm').classList.toggle('hidden');
+}
+
+function saveQuestion() {
+    const questionText = document.getElementById('newQuestionText').value;
+    const level = document.getElementById('newQuestionLevel').value;
+    const category = document.getElementById('newQuestionCategory').value;
+    const correctAnswer = document.getElementById('correctAnswer').value;
+    let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op2 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op3 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op4 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+
+    if (questionText && level && category && correctAnswer) {
+        const question = {
+        question: questionText,
+        option1: op1,
+        option2: op2,
+        option3: op3,
+        option4: op4,
+        correctOption: correctAnswer,
+        categ: category,
+        NV: level,
+      }
+      questions.push(question);
+    }else {
+     alert('Veuillez remplir tous les champs.');
+    }
+    console.log(questions[questions.length-1]);
+    console.log(questions.length);
+    document.getElementById('addQuestionForm').classList.add('hidden');
+    renderQuestions();
+};
+
+  
+
+  function renderQuestions() {
+    const questionsListDiv = document.getElementById('questionsList');
+    questionsListDiv.innerHTML = '';
+
+    questions.forEach((question, index) => {
+    const questionHtml = `
+        <div class="p-4 border mb-4 rounded-lg shadow-md">
+            <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
+            <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
+        </div>
+    `;
+    questionsListDiv.innerHTML += questionHtml;
+    });
+}
+
+function deleteQuestion(index) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
+        questions.splice(index, 1);
+        renderQuestions();
+    }
+  }
+
