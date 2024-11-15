@@ -25,6 +25,16 @@
       return;
     }
 
+  let countUsers = 0;
+  
+  // Sign up user and save to local storage
+  function signUpUser() {
+    const username = document.getElementById('signupUsername').value;
+    if (!username) {
+      alert("Please enter a username");
+      return;
+    }
+
     // Check if user already exists
     if (localStorage.getItem(username)) {
       alert("Username already exists. Please choose a different one.");
@@ -32,10 +42,12 @@
     }
 
     // Store user in local storage
-    localStorage.setItem(username, JSON.stringify({ username }));
+    localStorage.setItem(username, JSON.stringify({ username}));
+    localStorage.setItem(`userID${countUsers}`, generateRandomId());
     alert("Sign up successful! You can now log in.");
     document.getElementById('signupUsername').value = '';
     backToMain();
+    countUsers++;
   }
 
   // Login user by checking local storage
