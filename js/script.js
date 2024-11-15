@@ -204,4 +204,13 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.classList.add('hidden');
         startButton.parentElement.classList.remove('hidden');
     }
+    function startQuiz() {
+        startButton.parentElement.classList.add('hidden');
+        shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+        currentQuestionIndex = 0;
+        score = 0;
+        questionContainer.classList.remove('hidden');
+        setNextQuestion();
+    }
+    
 });
