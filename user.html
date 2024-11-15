@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - Quiz Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tests.js"></script> <!-- Ensure questions are loaded -->
+  <script src="js/user.js" defer></script>
+
   <style>
     .gradient-bg {
       background: linear-gradient(to bottom right, #6a0dad, #0078ff);
@@ -73,7 +76,7 @@
     }
   </style>
 </head>
-<body class="gradient-bg flex">
+<body class="gradient-bg flex" onload="initializeUserDashboard()">
 
   <!-- Sidebar Section -->
   <aside class="sidebar">
@@ -84,12 +87,12 @@
       <div class="mb-8">
         <h3 class="text-lg font-semibold mb-4">Niveau</h3>
         <div class="grid grid-cols-2 gap-4">
-          <button id="levelA1" onclick="selectLevel('A1')" class="level-button level-unlocked">A1</button>
-          <button id="levelA2" onclick="selectLevel('A2')" class="level-button level-locked">A2</button>
-          <button id="levelB1" onclick="selectLevel('B1')" class="level-button level-locked">B1</button>
-          <button id="levelB2" onclick="selectLevel('B2')" class="level-button level-locked">B2</button>
-          <button id="levelC1" onclick="selectLevel('C1')" class="level-button level-locked">C1</button>
-          <button id="levelC2" onclick="selectLevel('C2')" class="level-button level-locked">C2</button>
+          <button id="NVA1" onclick="selectNV('A1')" class="level-button level-unlocked">A1</button>
+          <button id="NVA2" onclick="selectNV('A2')" class="level-button level-locked">A2</button>
+          <button id="NVB1" onclick="selectNV('B1')" class="level-button level-locked">B1</button>
+          <button id="NVB2" onclick="selectNV('B2')" class="level-button level-locked">B2</button>
+          <button id="NVC1" onclick="selectNV('C1')" class="level-button level-locked">C1</button>
+          <button id="NVC2" onclick="selectNV('C2')" class="level-button level-locked">C2</button>
         </div>
       </div>
 
@@ -134,6 +137,13 @@
       </div>
     </div>
 
+    <!-- Quiz Start Section -->
+    <div id="quizStart" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h2 class="text-3xl font-bold mb-6">📋 Commencer le Quiz</h2>
+      <p class="mb-4">Vous avez sélectionné la catégorie: <span id="selectedCategory"></span></p>
+      <button onclick="startQuiz()" class="bg-green-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-green-600 transition">Commencer</button>
+    </div>
+
     <!-- Quiz Question -->
     <div id="quizQuestion" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h1 class="text-3xl font-bold mb-4">Question de Quiz</h1>
@@ -142,7 +152,5 @@
       <div id="answers" class="grid grid-cols-2 gap-4"></div>
     </div>
   </section>
-
-  <script src="js/user.js"></script>
 </body>
 </html>
