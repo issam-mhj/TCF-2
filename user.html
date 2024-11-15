@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - Quiz Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="js/tests.js"></script> <!-- Ensure questions are loaded -->
+  <script src="js/tests.js" defer></script> <!-- Ensure questions are loaded -->
   <script src="js/user.js" defer></script>
 
   <style>
@@ -74,6 +74,12 @@
     .logout-button:hover {
       background-color: #FF6347;
     }
+
+    #timer {
+      font-weight: bold;
+      color: #FF0000;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body class="gradient-bg flex" onload="initializeUserDashboard()">
@@ -87,12 +93,12 @@
       <div class="mb-8">
         <h3 class="text-lg font-semibold mb-4">Niveau</h3>
         <div class="grid grid-cols-2 gap-4">
-          <button id="NVA1" onclick="selectNV('A1')" class="level-button level-unlocked">A1</button>
-          <button id="NVA2" onclick="selectNV('A2')" class="level-button level-locked">A2</button>
-          <button id="NVB1" onclick="selectNV('B1')" class="level-button level-locked">B1</button>
-          <button id="NVB2" onclick="selectNV('B2')" class="level-button level-locked">B2</button>
-          <button id="NVC1" onclick="selectNV('C1')" class="level-button level-locked">C1</button>
-          <button id="NVC2" onclick="selectNV('C2')" class="level-button level-locked">C2</button>
+          <button id="NV_A1" class="level-button level-unlocked" onclick="startLevel('A1')">A1</button>
+          <button id="NV_A2" class="level-button level-locked" onclick="startLevel('A2')">A2</button>
+          <button id="NV_B1" class="level-button level-locked" onclick="startLevel('B1')">B1</button>
+          <button id="NV_B2" class="level-button level-locked" onclick="startLevel('B2')">B2</button>
+          <button id="NV_C1" class="level-button level-locked" onclick="startLevel('C1')">C1</button>
+          <button id="NV_C2" class="level-button level-locked" onclick="startLevel('C2')">C2</button>
         </div>
       </div>
 
@@ -131,7 +137,7 @@
     <div id="categorySelection" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h2 class="text-3xl font-bold mb-6">📝 Sélection de la Catégorie de Quiz</h2>
       <div class="space-y-4">
-        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📘 Grammaire</button>
+        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📜 Grammaire</button>
         <button onclick="selectCategory('Vocabulaire')" class="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">📚 Vocabulaire</button>
         <button onclick="selectCategory('Compréhension')" class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition">🔍 Compréhension</button>
       </div>
@@ -148,8 +154,16 @@
     <div id="quizQuestion" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h1 class="text-3xl font-bold mb-4">Question de Quiz</h1>
       <p id="questionCount" class="text-sm mb-4">Question 1 of 10</p>
-      <p id="questionText" class="text-xl font-medium mb-8"></p>
+      <p id="questionText" class="text-xl font-medium mb-4"></p>
+      <div id="timer">Temps restant: 60 secondes</div>
       <div id="answers" class="grid grid-cols-2 gap-4"></div>
+    </div>
+
+    <!-- Quiz Results (Placeholder) -->
+    <div id="quizResults" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h2 class="text-3xl font-bold mb-6">🏆 Résultats du Quiz</h2>
+      <p id="resultsSummary" class="text-lg mb-4">Vous avez terminé la catégorie!</p>
+      <button onclick="navigate('dashboard')" class="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-600 transition">Retourner au Tableau de Bord</button>
     </div>
   </section>
 </body>
