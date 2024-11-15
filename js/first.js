@@ -24,6 +24,7 @@
       alert("Please enter a username");
       return;
     }
+  }
 
   let countUsers = 0;
   

@@ -1828,7 +1828,6 @@ const questions = [
         },
     ]
 
-
 const local = window.localStorage;
 for(let i=0;i<questions.length;i++){
     let ques = questions[i].question;
@@ -1947,21 +1946,21 @@ function renderQuestions() {
 }
 
 function deleteQuestion(index) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
-        questions.splice(index, 1);
+    if (confirm(localStorage.getItem(`questions${index}`))) {
+        localStorage.removeItem(`questions${index}`);
+        localStorage.removeItem(`category${index}`);
+        localStorage.removeItem(`niveau${index}`);
+        localStorage.removeItem(`option1${index}`);
+        localStorage.removeItem(`option2${index}`);
+        localStorage.removeItem(`option3${index}`);
+        localStorage.removeItem(`opt4${index}`);
+        localStorage.removeItem(`correctoption${index}`);
         renderQuestions();
     }
-  }
-
-function modifyQuestion(index){
-    console.log("modifying")
 }
 
+function modifyQuestion(){
 
-function deleteQuestion(index) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette question?')) {
-        questions.splice(index, 1);
-        renderQuestions();
-    }
-  }
+}
 
+// localStorage.removeItem(keyName);
