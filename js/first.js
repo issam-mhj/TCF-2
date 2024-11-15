@@ -11,6 +11,7 @@ function showSignUp() {
   document.getElementById('signUP').classList.remove('hidden');
 }
 
+
 function backToMain() {
   document.getElementById('signIN').classList.add('hidden');
   document.getElementById('signUP').classList.add('hidden');
@@ -21,6 +22,15 @@ function backToMain() {
 function generateRandomId() {
   return '' + Date.now();
 }
+
+  // Sign up user and save to local storage
+  function signUpUser() {
+    const username = document.getElementById('signupUsername').value;
+    if (!username) {
+      alert("Please enter a username");
+      return;
+    }
+  }
 
 // Sign up user and save to local storage
 function signUpUser() {
