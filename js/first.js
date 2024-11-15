@@ -16,12 +16,14 @@
     document.getElementById('signUP').classList.add('hidden');
     document.getElementById('logOrSign').classList.remove('hidden');
   }
-  
-  //function dyal ID
 
-  function generateRandomId() {
-    return '' + Date.now();
-  }
+  // Sign up user and save to local storage
+  function signUpUser() {
+    const username = document.getElementById('signupUsername').value;
+    if (!username) {
+      alert("Please enter a username");
+      return;
+    }
 
   let countUsers = 0;
   
