@@ -4,61 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ultimate French Language Quiz</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="tailwind/tailwind.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
   </head>
 
-<body>
-        
-    <!--=================****LOGIN OR sign up****=================-->
-    <div class="bg-white bg-opacity-10 rounded-3xl p-8 backdrop-blur-md max-w-sm text-center shadow-lg " id="logOrSign">
-        <h1 class="text-white font-bold text-3xl mb-8">French Quiz TCF</h1>
-        <div class="flex flex-col items-center">
-            <button onclick="login()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 mb-4 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
-        Login
-      </button>
-      <button onclick="signUp()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
+  <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-purple-600">
+
+    <!-- Login and Sign Up Card Section -->
+    <div id="logOrSign" class="bg-white bg-opacity-10 p-8 backdrop-blur-md rounded-3xl max-w-sm text-center shadow-lg">
+      <h1 class="text-white font-bold text-3xl mb-8">French Quiz TCF</h1>
+      <div class="flex flex-col items-center">
+        <button onclick="showLogin()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 mb-4 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
+          Login
+        </button>
+        <button onclick="showSignUp()" class="bg-yellow-400 text-black font-bold py-2 px-6 rounded-full w-2/3 transform transition duration-300 hover:bg-yellow-300 hover:scale-105">
           Sign Up
         </button>
+      </div>
     </div>
-</div>
-        <!--=================****END OF LOGIN OR sign up****=================-->
 
-
-        <!--=================****sign up****=================-->
-        <div class="bg-gradient-to-br from-[#6a11cb] to-[#2575fc] w-[40%] text-black pt-[10px] h-[250px] text-xl rounded-2xl hidden" id="signUP">
-        <div class="border-solid text-center text-white font-bold ">
-            <h1>sign up</h1>
-        </div>
-        <div class="text-center pt-[8%] pb-[13%]">
-            <input type="text" placeholder="username" required class="rounded-lg h-[50px]">
-        </div>
-        <div class="pl-[44%]">
-            <button class="bg-[#FFCC00] items-center px-2 rounded-lg font-bold">sign up</button>
-        </div>
+    <!-- Sign Up Section -->
+    <div id="signUP" class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center">
+      <h1 class="text-3xl font-semibold mb-6">Sign Up</h1>
+      <div class="mb-6">
+        <input id="signupUsername" type="text" placeholder="Username" required class="w-full py-3 px-4 rounded-lg text-gray-800" />
+      </div>
+      <div class="flex justify-center gap-4">
+        <button onclick="backToMain()" class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition">
+          Back
+        </button>
+        <button onclick="signUpUser()" class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition">
+          Sign Up
+        </button>
+      </div>
     </div>
-        <!--=================****END sign up****=================-->
 
-        <!--=================****login page****=================-->
-    
-    
-        <div class="bg-gradient-to-br from-[#6a11cb] to-[#2575fc] w-[50%] text-black pt-[10px] h-[300px] text-xl rounded-2xl hidden" id="signIN">
-            <div class="border-solid text-center text-white font-bold ">
-                <h1>LOGIN</h1>
-            </div>
-            <div class="text-center pt-[4px] flex  flex-col ">
-                <input type="text" class="w-1/4 h-12 rounded-2xl mt-12 mx-72" placeholder="username" required>
-                <button class="bg-yellow-500 w-20 rounded-2xl mt-12 font-bold h-10 flex justify-center mx-[340px] text-lg">LOGIN</button>
-            </div>
-        </div>
-    
-        <!--=================****login page****=================-->    
-  
-  <script src="script.js"></script>
-</body>
+    <!-- Login Section -->
+    <div id="signIN" class="hidden bg-gradient-to-br from-purple-700 to-blue-500 w-[40%] p-8 text-white rounded-2xl shadow-lg text-center">
+      <h1 class="text-3xl font-semibold mb-6">Login</h1>
+      <div class="mb-6">
+        <input id="loginUsername" type="text" placeholder="Username" required class="w-full py-3 px-4 rounded-lg text-gray-800" />
+      </div>
+      <div class="flex justify-center gap-4">
+        <button onclick="backToMain()" class="bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-bold hover:bg-gray-400 transition">
+          Back
+        </button>
+        <button onclick="loginUser()" class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold hover:bg-yellow-300 transition">
+          Login
+        </button>
+      </div>
+    </div>
+
+    <script src="js/first.js"></script>
+  </body>
 </html>
