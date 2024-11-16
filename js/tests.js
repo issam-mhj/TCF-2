@@ -1908,7 +1908,6 @@ function saveQuestion() {
     renderQuestions();
 };
 
-
 function renderQuestions() {
     const questionsListDiv = document.getElementById('questionsList');
     questionsListDiv.innerHTML = '';
@@ -1936,7 +1935,20 @@ function renderQuestions() {
             <div class="p-4 border mb-4 rounded-lg shadow-md">
                 <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
                 <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
-                <button onclick="modifyQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+                <button onclick="editQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+                <div id="questionInfo${index}" class="hidden p-3 mt-3 border rounded-lg bg-gray-100">
+                    <p><strong>Option 1:</strong> ${question.option1}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 2:</strong> ${question.option2}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 3:</strong> ${question.option3}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 4:</strong> ${question.option4}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Correct Option:</strong> ${question.correctOption}</p>
+                    <input type="text" placeholder="your modification">
+                    <br><button>submit<button>
+                </div>
             </div>
         `;
         questionsListDiv.innerHTML += questionHtml;
@@ -1957,8 +1969,18 @@ function deleteQuestion(index) {
     }
 }
 
-function modifyQuestion(){
-
+function editQuestion(index) {
+    const questionInfoDiv = document.getElementById(`questionInfo${index}`);
+    questionInfoDiv.classList.toggle('hidden');
 }
 
-// localStorage.removeItem(keyName);
+let x = document.getElementById("x");
+
+let y = 0;
+
+function somme(){
+    a1= 4;
+    x.innerText = y; 
+}
+
+
