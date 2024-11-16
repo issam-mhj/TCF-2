@@ -1,5 +1,4 @@
 const questions = [
-    [
         {
             question: "Comment dit-on 'cat' en français ?",
             option1: "Chien",
@@ -1209,423 +1208,421 @@ const questions = [
             option3: "Le",
             option4: "La",
             correctOption: "Le",
+    },
+    {
+        question: "Nous ____ contents.",
+        categ: "Grammaire",
+        NV: "A1",
+        option1: "est",
+        option2: "sommes",
+        option3: "avez",
+        option4: "sont",
+        correctOption: "sommes"
+    },
+    {
+        question: "Ils ____ une voiture.",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Nous ____ contents.",
-            categ: "Grammaire",
-            NV: "A1",
-            option1: "est",
-            option2: "sommes",
-            option3: "avez",
-            option4: "sont",
-            correctOption: "sommes"
-        },
-        {
-            question: "Ils ____ une voiture.",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "avons",
+        option2: "avez",
+        option3: "ont",
+        option4: "est",
+        correctOption: "ont"
 
-            option1: "avons",
-            option2: "avez",
-            option3: "ont",
-            option4: "est",
-            correctOption: "ont"
+    },
+    {
+        question: "Elle ____ (habiter) à Paris",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Elle ____ (habiter) à Paris",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "habites",
+        option2: " habite",
+        option3: " habitons",
+        option4: "habit",
+        correctOption: "habite",
 
-            option1: "habites",
-            option2: " habite",
-            option3: " habitons",
-            option4: "habit",
-            correctOption: "habite",
+    },
+    {
+        question: "Marie est gentille. ____ est toujours souriante",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Marie est gentille. ____ est toujours souriante",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: " Il",
+        option2: "Elle",
+        option3: "Tu",
+        option4: "il",
+        correctOption: "Elle",
 
-            option1: " Il",
-            option2: "Elle",
-            option3: "Tu",
-            option4: "il",
-            correctOption: "Elle",
+    },
+    {
+        question: "C'est la maison de moi. C'est ____ maison.",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "C'est la maison de moi. C'est ____ maison.",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "mon",
+        option2: "ma",
+        option3: "son",
+        option4: "mes",
+        correctOption: "ma"
 
-            option1: "mon",
-            option2: "ma",
-            option3: "son",
-            option4: "mes",
-            correctOption: "ma"
+    },
+    {
+        question: "Sélectionnez la phrase correcte",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Sélectionnez la phrase correcte",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "Nous avons un chien marron.",
+        option2: "Nous as un chien marron.",
+        option3: " Nous a un chien marron.",
+        option4: "Nous avez un chein marron",
+        correctOption: "Nous avons un chien marron."
 
-            option1: "Nous avons un chien marron.",
-            option2: "Nous as un chien marron.",
-            option3: " Nous a un chien marron.",
-            option4: "Nous avez un chein marron",
-            correctOption: "Nous avons un chien marron."
+    },
+    {
+        question: "Nous allons ____ école tous les jours.",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Nous allons ____ école tous les jours.",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "au",
+        option2: "à",
+        option3: " en",
+        option4: "dans",
+        correctOption: "à"
 
-            option1: "au",
-            option2: "à",
-            option3: " en",
-            option4: "dans",
-            correctOption: "à"
+    },
+    {
+        question: "Paul et moi avons un vélo. C'est ____ vélo.",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Paul et moi avons un vélo. C'est ____ vélo.",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "notre",
+        option2: "votre",
+        option3: " leur",
+        option4: "vos",
+        correctOption: "notre"
 
-            option1: "notre",
-            option2: "votre",
-            option3: " leur",
-            option4: "vos",
-            correctOption: "notre"
+    },
+    {
+        question: "Elle aime la musique. (Exprimez la négation)",
+        categ: "Grammaire",
+        NV: "A1",
 
-        },
-        {
-            question: "Elle aime la musique. (Exprimez la négation)",
-            categ: "Grammaire",
-            NV: "A1",
+        option1: "Elle non aime la musique. ",
+        option2: "Elle ne aime pas la musique.",
+        option3: " Elle n'aime pas la musique.",
+        option4: "Elle aime pas la musique.",
+        correctOption: "Elle n'aime pas la musique.."
 
-            option1: "Elle non aime la musique. ",
-            option2: "Elle ne aime pas la musique.",
-            option3: " Elle n'aime pas la musique.",
-            option4: "Elle aime pas la musique.",
-            correctOption: "Elle n'aime pas la musique.."
+    },
+    //========****A2****========//
+    {
+        question: "Nous avons ____ nouveaux voisins.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "de",
+        option2: "des",
+        option3: "du",
+        option4: "les",
+        correctOption: "de"
+    },
+    {
+        question: "Ils ____ (partir) en vacances demain.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "part",
+        option2: "partons",
+        option3: "partent",
+        option4: "partez",
+        correctOption: "partent"
+    },
+    {
+        question: "Comment ____ -tu la France ?",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "trouves",
+        option2: "trouve",
+        option3: "trouvez",
+        option4: "trouvons",
+        correctOption: "trouves"
+    },
+    {
+        question: "C'est une maison ____ j'ai toujours rêvé.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "dont",
+        option2: "où",
+        option3: "qui",
+        option4: "que",
+        correctOption: "dont"
+    },
+    {
+        question: "Elle est ____ que sa sœur.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "plus grand",
+        option2: "plus grande",
+        option3: "plus grands",
+        option4: "plus grandes",
+        correctOption: "plus grande"
+    },
+    {
+        question: "Ils habitent ____ une grande ville.",
+        categ: "Grammaire",
+        NV: "A",
+        option1: "dans",
+        option2: "en",
+        option3: "à",
+        option4: "chez",
+        correctOption: "dans"
+    },
+    {
+        question: "Il n'y a ____ personne ici.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "pas",
+        option2: "aucun",
+        option3: "ne",
+        option4: "pas de",
+        correctOption: "pas"
+    },
+    {
+        question: "Ils ____ (finir) leur travail avant midi.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "finissent",
+        option2: "finir",
+        option3: "finissons",
+        option4: "finit",
+        correctOption: "finissent"
+    },
+    {
+        question: "____ tu veux venir au cinéma ce soir ?",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "Est-ce que",
+        option2: "Quel",
+        option3: "Où",
+        option4: "Comment",
+        correctOption: "Est-ce que"
+    },
+    {
+        question: "C’est la personne ____ je parlais.",
+        categ: "Grammaire",
+        NV: "A2",
+        option1: "à qui",
+        option2: "où",
+        option3: "dont",
+        option4: "avec",
+        correctOption: "dont"
+    },
 
-        },
-        //========****A2****========//
+    //========****B1****=======//
+    
         {
-            question: "Nous avons ____ nouveaux voisins.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "de",
-            option2: "des",
-            option3: "du",
-            option4: "les",
-            correctOption: "de"
-        },
+        question: "Il est parti sans ____ au revoir.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "dire",
+        option2: "dira",
+        option3: "dit",
+        option4: "disaient",
+        correctOption: "dire"
+    },
+    {
+        question: "C'est l'auteur ____ j'admire les œuvres.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "dont",
+        option2: "que",
+        option3: "qui",
+        option4: "lequel",
+        correctOption: "dont"
+    },
+    {
+        question: "Si elle ____ plus tôt, elle aurait pu nous aider.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "vient",
+        option2: "venait",
+        option3: "était venue",
+        option4: "serait venue",
+        correctOption: "était venue"
+    },
+    {
+        question: "Nous devons étudier pour ____ bien préparer aux examens.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "nous",
+        option2: "lui",
+        option3: "les",
+        option4: "y",
+        correctOption: "nous"
+    },
+    {
+        question: "Ils ____ (devoir) finir le projet avant la fin du mois.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "devraient",
+        option2: "doivent",
+        option3: "devront",
+        option4: "dû",
+        correctOption: "doivent"
+    },
+    {
+        question: "Il parle si doucement que personne ne peut l’____.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "entendre",
+        option2: "écouter",
+        option3: "entendu",
+        option4: "entends",
+        correctOption: "entendre"
+    },
+    {
+        question: "Je ne savais pas qu'elle ____ (pouvoir) venir ce soir.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "pourrait",
+        option2: "peut",
+        option3: "a pu",
+        option4: "pouvait",
+        correctOption: "pouvait"
+    },
+    {
+        question: "Il est important que tu ____ (faire) attention en classe.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "fait",
+        option2: "fasses",
+        option3: "fais",
+        option4: "feras",
+        correctOption: "fasses"
+    },
+    {
+        question: "Je ne peux pas venir, ____ j'aimerais beaucoup.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "enfin",
+        option2: "car",
+        option3: "même si",
+        option4: "sauf",
+        correctOption: "même si"
+    },
+    {
+        question: "Il m'a prêté un livre ____ la couverture est rouge.",
+        categ: "Grammaire",
+        NV: "B1",
+        option1: "dont",
+        option2: "qui",
+        option3: "que",
+        option4: "où",
+        correctOption: "dont"
+    },
+    //=========****B2****============//
+    
         {
-            question: "Ils ____ (partir) en vacances demain.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "part",
-            option2: "partons",
-            option3: "partent",
-            option4: "partez",
-            correctOption: "partent"
-        },
-        {
-            question: "Comment ____ -tu la France ?",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "trouves",
-            option2: "trouve",
-            option3: "trouvez",
-            option4: "trouvons",
-            correctOption: "trouves"
-        },
-        {
-            question: "C'est une maison ____ j'ai toujours rêvé.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "dont",
-            option2: "où",
-            option3: "qui",
-            option4: "que",
-            correctOption: "dont"
-        },
-        {
-            question: "Elle est ____ que sa sœur.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "plus grand",
-            option2: "plus grande",
-            option3: "plus grands",
-            option4: "plus grandes",
-            correctOption: "plus grande"
-        },
-        {
-            question: "Ils habitent ____ une grande ville.",
-            categ: "Grammaire",
-            NV: "A",
-            option1: "dans",
-            option2: "en",
-            option3: "à",
-            option4: "chez",
-            correctOption: "dans"
-        },
-        {
-            question: "Il n'y a ____ personne ici.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "pas",
-            option2: "aucun",
-            option3: "ne",
-            option4: "pas de",
-            correctOption: "pas"
-        },
-        {
-            question: "Ils ____ (finir) leur travail avant midi.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "finissent",
-            option2: "finir",
-            option3: "finissons",
-            option4: "finit",
-            correctOption: "finissent"
-        },
-        {
-            question: "____ tu veux venir au cinéma ce soir ?",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "Est-ce que",
-            option2: "Quel",
-            option3: "Où",
-            option4: "Comment",
-            correctOption: "Est-ce que"
-        },
-        {
-            question: "C’est la personne ____ je parlais.",
-            categ: "Grammaire",
-            NV: "A2",
-            option1: "à qui",
-            option2: "où",
-            option3: "dont",
-            option4: "avec",
-            correctOption: "dont"
-        },
+        question: "Bien qu'il ____ (savoir) la vérité, il préfère se taire.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "sache",
+        option2: "sait",
+        option3: "savait",
+        option4: "saura",
+        correctOption: "sache"
+    },
+    {
+        question: "Il est parti sans que nous ____ (avoir) le temps de le saluer.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "avons",
+        option2: "ayons",
+        option3: "avions",
+        option4: "aurons",
+        correctOption: "ayons"
+    },
+    {
+        question: "C'est l'entreprise ____ je vous ai parlé hier.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "dont",
+        option2: "où",
+        option3: "que",
+        option4: "laquelle",
+        correctOption: "dont"
+    },
+    {
+        question: "Je chercherai quelqu'un qui ____ (pouvoir) m'aider dans ce projet.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "pouvait",
+        option2: "peut",
+        option3: "puisse",
+        option4: "pourra",
+        correctOption: "puisse"
+    },
+    {
+        question: "Elle agit comme si elle ____ (être) la patronne.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "est",
+        option2: "sera",
+        option3: "était",
+        option4: "soit",
+        correctOption: "était"
+    },
+    {
+        question: "Ils se sont retrouvés dans une situation ____ ils ne pouvaient pas sortir.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "que",
+        option2: "dont",
+        option3: "où",
+        option4: "laquelle",
+        correctOption: "dont"
+    },
+    {
+        question: "Je suis venu afin que vous ____ (comprendre) mieux la situation.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "comprenez",
+        option2: "comprendrez",
+        option3: "comprissiez",
+        option4: "compreniez",
+        correctOption: "compreniez"
+    },
+    {
+        question: "Il regrette que nous ____ (ne pas venir) plus tôt.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "ne sommes pas venus",
+        option2: "ne soyons pas venus",
+        option3: "ne venions pas",
+        option4: "ne serions pas venus",
+        correctOption: "ne soyons pas venus"
+    },
+    {
+        question: "____ qu'il m'a dit est surprenant.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "Ce que",
+        option2: "Ce dont",
+        option3: "Ce qui",
+        option4: "Ce dont",
+        correctOption: "Ce que"
+    },
+    {
+        question: "À moins qu'ils ____ (changer) d'avis, nous n'aurons pas de réponse.",
+        categ: "Grammaire",
+        NV: "B2",
+        option1: "changent",
+        option2: "changent pas",
+        option3: "changeons",
+        option4: "changeront",
+        correctOption: "changent"
+    },
 
-        //========****B1****=======//
-        
-            {
-            question: "Il est parti sans ____ au revoir.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "dire",
-            option2: "dira",
-            option3: "dit",
-            option4: "disaient",
-            correctOption: "dire"
-        },
-        {
-            question: "C'est l'auteur ____ j'admire les œuvres.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "dont",
-            option2: "que",
-            option3: "qui",
-            option4: "lequel",
-            correctOption: "dont"
-        },
-        {
-            question: "Si elle ____ plus tôt, elle aurait pu nous aider.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "vient",
-            option2: "venait",
-            option3: "était venue",
-            option4: "serait venue",
-            correctOption: "était venue"
-        },
-        {
-            question: "Nous devons étudier pour ____ bien préparer aux examens.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "nous",
-            option2: "lui",
-            option3: "les",
-            option4: "y",
-            correctOption: "nous"
-        },
-        {
-            question: "Ils ____ (devoir) finir le projet avant la fin du mois.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "devraient",
-            option2: "doivent",
-            option3: "devront",
-            option4: "dû",
-            correctOption: "doivent"
-        },
-        {
-            question: "Il parle si doucement que personne ne peut l’____.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "entendre",
-            option2: "écouter",
-            option3: "entendu",
-            option4: "entends",
-            correctOption: "entendre"
-        },
-        {
-            question: "Je ne savais pas qu'elle ____ (pouvoir) venir ce soir.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "pourrait",
-            option2: "peut",
-            option3: "a pu",
-            option4: "pouvait",
-            correctOption: "pouvait"
-        },
-        {
-            question: "Il est important que tu ____ (faire) attention en classe.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "fait",
-            option2: "fasses",
-            option3: "fais",
-            option4: "feras",
-            correctOption: "fasses"
-        },
-        {
-            question: "Je ne peux pas venir, ____ j'aimerais beaucoup.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "enfin",
-            option2: "car",
-            option3: "même si",
-            option4: "sauf",
-            correctOption: "même si"
-        },
-        {
-            question: "Il m'a prêté un livre ____ la couverture est rouge.",
-            categ: "Grammaire",
-            NV: "B1",
-            option1: "dont",
-            option2: "qui",
-            option3: "que",
-            option4: "où",
-            correctOption: "dont"
-        },
-        //=========****B2****============//
-        
-            {
-            question: "Bien qu'il ____ (savoir) la vérité, il préfère se taire.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "sache",
-            option2: "sait",
-            option3: "savait",
-            option4: "saura",
-            correctOption: "sache"
-        },
-        {
-            question: "Il est parti sans que nous ____ (avoir) le temps de le saluer.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "avons",
-            option2: "ayons",
-            option3: "avions",
-            option4: "aurons",
-            correctOption: "ayons"
-        },
-        {
-            question: "C'est l'entreprise ____ je vous ai parlé hier.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "dont",
-            option2: "où",
-            option3: "que",
-            option4: "laquelle",
-            correctOption: "dont"
-        },
-        {
-            question: "Je chercherai quelqu'un qui ____ (pouvoir) m'aider dans ce projet.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "pouvait",
-            option2: "peut",
-            option3: "puisse",
-            option4: "pourra",
-            correctOption: "puisse"
-        },
-        {
-            question: "Elle agit comme si elle ____ (être) la patronne.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "est",
-            option2: "sera",
-            option3: "était",
-            option4: "soit",
-            correctOption: "était"
-        },
-        {
-            question: "Ils se sont retrouvés dans une situation ____ ils ne pouvaient pas sortir.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "que",
-            option2: "dont",
-            option3: "où",
-            option4: "laquelle",
-            correctOption: "dont"
-        },
-        {
-            question: "Je suis venu afin que vous ____ (comprendre) mieux la situation.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "comprenez",
-            option2: "comprendrez",
-            option3: "comprissiez",
-            option4: "compreniez",
-            correctOption: "compreniez"
-        },
-        {
-            question: "Il regrette que nous ____ (ne pas venir) plus tôt.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "ne sommes pas venus",
-            option2: "ne soyons pas venus",
-            option3: "ne venions pas",
-            option4: "ne serions pas venus",
-            correctOption: "ne soyons pas venus"
-        },
-        {
-            question: "____ qu'il m'a dit est surprenant.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "Ce que",
-            option2: "Ce dont",
-            option3: "Ce qui",
-            option4: "Ce dont",
-            correctOption: "Ce que"
-        },
-        {
-            question: "À moins qu'ils ____ (changer) d'avis, nous n'aurons pas de réponse.",
-            categ: "Grammaire",
-            NV: "B2",
-            option1: "changent",
-            option2: "changent pas",
-            option3: "changeons",
-            option4: "changeront",
-            correctOption: "changent"
-        },
-
-
-        //============*****C1*****==========//
+//============*****C1*****==========//
             {
             question: "Il est dommage que tu ____ (ne pas comprendre) cette explication.",
             categ: "Grammaire",
@@ -1828,4 +1825,140 @@ const questions = [
             correctOption: "acceptera"
         },
     ]
-]
+
+const local = window.localStorage;
+for(let i=0;i<questions.length;i++){
+    let ques = questions[i].question;
+    let categ = questions[i].categ;
+    let nv = questions[i].NV;
+    let op1 = questions[i].option1;
+    let op2 = questions[i].option2;
+    let op3 = questions[i].option3;
+    let op4 = questions[i].option4;
+    let correctop = questions[i].correctOption;
+    local.setItem(`questions${i}`, ques);
+    local.setItem(`category${i}`, categ);
+    local.setItem(`niveau${i}`, nv);
+    local.setItem(`option1${i}`, op1);
+    local.setItem(`option2${i}`, op2);
+    local.setItem(`option3${i}`, op3);
+    local.setItem(`opt4${i}`, op4);
+    local.setItem(`correctoption${i}`, correctop);
+}
+console.log(questions.length);
+
+
+function navigate(section) {
+    document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
+    document.getElementById(section).classList.remove('hidden');
+    }
+
+function displayAddQuestionForm() {
+    document.getElementById('addQuestionForm').classList.toggle('hidden');
+}
+renderQuestions();
+
+let question;
+
+function saveQuestion() {
+    const questionText = document.getElementById('newQuestionText').value;
+    const level = document.getElementById('newQuestionLevel').value;
+    const category = document.getElementById('newQuestionCategory').value;
+    const correctAnswer = document.getElementById('correctAnswer').value;
+    let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op2 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op3 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    let op4 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+
+    if (questionText && level && category && correctAnswer) {
+        question = {
+        question: questionText,
+        option1: op1,
+        option2: op2,
+        option3: op3,
+        option4: op4,
+        correctOption: correctAnswer,
+        categ: category,
+        NV: level,
+      }
+      questions.push(question);
+      let ques = question.question;
+      let categ = question.categ;
+      let nv = question.NV;
+      let opt1 = question.option1;
+      let opt2 = question.option2;
+      let opt3 = question.option3;
+      let opt4 = question.option4;
+      let correctop = question.correctOption;
+      local.setItem(`questions${questions.length}`, ques);
+      local.setItem(`category${questions.length}`, categ);
+      local.setItem(`niveau${questions.length}`, nv);
+      local.setItem(`option1${questions.length}`, opt1);
+      local.setItem(`option2${questions.length}`, opt2);
+      local.setItem(`option3${questions.length}`, opt3);
+      local.setItem(`opt4${questions.length}`, opt4);
+      local.setItem(`correctoption${questions.length}`, correctop);
+      console.log(questions.length);
+    }else {
+     alert('Veuillez remplir tous les champs.');
+    }
+    console.log(questions[questions.length-1]);
+    console.log(questions.length);
+    document.getElementById('addQuestionForm').classList.add('hidden');
+    renderQuestions();
+};
+
+
+function renderQuestions() {
+    const questionsListDiv = document.getElementById('questionsList');
+    questionsListDiv.innerHTML = '';
+
+    const questionsList = [];
+
+    const numberOfQuestions = localStorage.length / 8; 
+
+    for (let i = 0; i < numberOfQuestions; i++) {
+        const question = {
+            question: localStorage.getItem(`questions${i}`),
+            categ: localStorage.getItem(`category${i}`),
+            NV: localStorage.getItem(`niveau${i}`),
+            option1: localStorage.getItem(`option1${i}`),
+            option2: localStorage.getItem(`option2${i}`),
+            option3: localStorage.getItem(`option3${i}`),
+            option4: localStorage.getItem(`opt4${i}`),
+            correctOption: localStorage.getItem(`correctoption${i}`)
+        };
+        questionsList.push(question);
+    }
+
+    questionsList.forEach((question, index) => {
+        const questionHtml = `
+            <div class="p-4 border mb-4 rounded-lg shadow-md">
+                <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
+                <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
+                <button onclick="modifyQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+            </div>
+        `;
+        questionsListDiv.innerHTML += questionHtml;
+    });
+}
+
+function deleteQuestion(index) {
+    if (confirm(localStorage.getItem(`questions${index}`))) {
+        localStorage.removeItem(`questions${index}`);
+        localStorage.removeItem(`category${index}`);
+        localStorage.removeItem(`niveau${index}`);
+        localStorage.removeItem(`option1${index}`);
+        localStorage.removeItem(`option2${index}`);
+        localStorage.removeItem(`option3${index}`);
+        localStorage.removeItem(`opt4${index}`);
+        localStorage.removeItem(`correctoption${index}`);
+        renderQuestions();
+    }
+}
+
+function modifyQuestion(){
+
+}
+
+// localStorage.removeItem(keyName);

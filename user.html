@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - Quiz Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tests.js" defer></script> <!-- Ensure questions are loaded -->
+  <script src="js/user.js" defer></script>
+
   <style>
     .gradient-bg {
       background: linear-gradient(to bottom right, #6a0dad, #0078ff);
@@ -17,6 +20,9 @@
       background: #0A1931;
       color: white;
       padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .level-button {
@@ -31,12 +37,12 @@
     }
 
     .level-locked {
-      background-color: #888; /* Grey for locked level */
+      background-color: #888;
       cursor: not-allowed;
     }
 
     .level-unlocked {
-      background-color: #00FF00; /* Green for unlocked level */
+      background-color: #00FF00;
     }
 
     .category-label {
@@ -47,49 +53,75 @@
     }
 
     .category-valid {
-      color: #00FF00; /* Green checkmark for completed category */
+      color: #00FF00;
     }
 
     .category-invalid {
-      color: #FF0000; /* Red cross for incomplete category */
+      color: #FF0000;
+    }
+
+    .logout-button {
+      background-color: #FF4500;
+      color: white;
+      font-weight: bold;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: #FF6347;
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #FF0000;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
-<body class="gradient-bg flex">
+<body class="gradient-bg flex" onload="initializeUserDashboard()">
 
   <!-- Sidebar Section -->
   <aside class="sidebar">
-    <h2 class="text-xl font-bold mb-6" id="username">Utilisateur: Invité</h2>
+    <div>
+      <h2 class="text-xl font-bold mb-6" id="username">Utilisateur: Invité</h2>
 
-    <!-- Niveau Section -->
-    <div class="mb-8">
-      <h3 class="text-lg font-semibold mb-4">Niveau</h3>
-      <div class="grid grid-cols-2 gap-4">
-        <button id="levelA1" onclick="selectLevel('A1')" class="level-button level-unlocked">A1</button>
-        <button id="levelA2" onclick="selectLevel('A2')" class="level-button level-locked">A2</button>
-        <button id="levelB1" onclick="selectLevel('B1')" class="level-button level-locked">B1</button>
-        <button id="levelB2" onclick="selectLevel('B2')" class="level-button level-locked">B2</button>
-        <button id="levelC1" onclick="selectLevel('C1')" class="level-button level-locked">C1</button>
-        <button id="levelC2" onclick="selectLevel('C2')" class="level-button level-locked">C2</button>
+      <!-- Niveau Section -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold mb-4">Niveau</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <button id="NV_A1" class="level-button level-unlocked" onclick="startLevel('A1')">A1</button>
+          <button id="NV_A2" class="level-button level-locked" onclick="startLevel('A2')">A2</button>
+          <button id="NV_B1" class="level-button level-locked" onclick="startLevel('B1')">B1</button>
+          <button id="NV_B2" class="level-button level-locked" onclick="startLevel('B2')">B2</button>
+          <button id="NV_C1" class="level-button level-locked" onclick="startLevel('C1')">C1</button>
+          <button id="NV_C2" class="level-button level-locked" onclick="startLevel('C2')">C2</button>
+        </div>
+      </div>
+
+      <!-- Catégorie Section -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold mb-4">Catégorie</h3>
+        <div class="category-label">
+          <span>Grammaire</span>
+          <span id="categoryGrammaire" class="category-invalid">❌</span>
+        </div>
+        <div class="category-label">
+          <span>Vocabulaire</span>
+          <span id="categoryVocabulaire" class="category-invalid">❌</span>
+        </div>
+        <div class="category-label">
+          <span>Compréhension</span>
+          <span id="categoryCompréhension" class="category-invalid">❌</span>
+        </div>
       </div>
     </div>
 
-    <!-- Catégorie Section -->
-    <div class="mb-8">
-      <h3 class="text-lg font-semibold mb-4">Catégorie</h3>
-      <div class="category-label">
-        <span>Grammaire</span>
-        <span id="categoryGrammaire" class="category-invalid">❌</span>
-      </div>
-      <div class="category-label">
-        <span>Vocabulaire</span>
-        <span id="categoryVocabulaire" class="category-invalid">❌</span>
-      </div>
-      <div class="category-label">
-        <span>Compréhension</span>
-        <span id="categoryCompréhension" class="category-invalid">❌</span>
-      </div>
-    </div>
+    <!-- Log Out Button -->
+    <button onclick="logoutUser()" class="logout-button mt-10">Se Déconnecter</button>
   </aside>
 
   <!-- Main Content Section -->
@@ -105,154 +137,34 @@
     <div id="categorySelection" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h2 class="text-3xl font-bold mb-6">📝 Sélection de la Catégorie de Quiz</h2>
       <div class="space-y-4">
-        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📘 Grammaire</button>
+        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📜 Grammaire</button>
         <button onclick="selectCategory('Vocabulaire')" class="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">📚 Vocabulaire</button>
         <button onclick="selectCategory('Compréhension')" class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition">🔍 Compréhension</button>
       </div>
+    </div>
+
+    <!-- Quiz Start Section -->
+    <div id="quizStart" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h2 class="text-3xl font-bold mb-6">📋 Commencer le Quiz</h2>
+      <p class="mb-4">Vous avez sélectionné la catégorie: <span id="selectedCategory"></span></p>
+      <button onclick="startQuiz()" class="bg-green-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-green-600 transition">Commencer</button>
     </div>
 
     <!-- Quiz Question -->
     <div id="quizQuestion" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h1 class="text-3xl font-bold mb-4">Question de Quiz</h1>
       <p id="questionCount" class="text-sm mb-4">Question 1 of 10</p>
-      <p id="questionText" class="text-xl font-medium mb-8"></p>
+      <p id="questionText" class="text-xl font-medium mb-4"></p>
+      <div id="timer">Temps restant: 60 secondes</div>
       <div id="answers" class="grid grid-cols-2 gap-4"></div>
     </div>
+
+    <!-- Quiz Results (Placeholder) -->
+    <div id="quizResults" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h2 class="text-3xl font-bold mb-6">🏆 Résultats du Quiz</h2>
+      <p id="resultsSummary" class="text-lg mb-4">Vous avez terminé la catégorie!</p>
+      <button onclick="navigate('dashboard')" class="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-600 transition">Retourner au Tableau de Bord</button>
+    </div>
   </section>
-
-  <!-- JavaScript -->
-  <script>
-    let questions = JSON.parse(localStorage.getItem("questions")) || {
-      Grammaire: [],
-      Vocabulaire: [],
-      Compréhension: []
-    };
-
-    let user = JSON.parse(localStorage.getItem("user")) || {
-      username: "Invité",
-      level: "A1",
-      score: 0,
-      completedCategories: {}
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      // Set user name
-      document.getElementById('username').textContent = `Utilisateur: ${user.username}`;
-
-      // Render locked/unlocked levels
-      updateLevelButtons();
-
-      // Render category completion status
-      updateCategoryStatus();
-    });
-
-    function updateLevelButtons() {
-      const levels = ["A1", "A2", "B1", "B2", "C1", "C2"];
-      levels.forEach((level, index) => {
-        const button = document.getElementById(`level${level}`);
-        if (index === 0 || (user.level === levels[index - 1] && user.completedCategories[user.level])) {
-          button.classList.remove("level-locked");
-          button.classList.add("level-unlocked");
-          button.disabled = false;
-        } else {
-          button.classList.remove("level-unlocked");
-          button.classList.add("level-locked");
-          button.disabled = true;
-        }
-      });
-    }
-
-    function updateCategoryStatus() {
-      const categories = ["Grammaire", "Vocabulaire", "Compréhension"];
-      categories.forEach((category) => {
-        const categoryElement = document.getElementById(`category${category}`);
-        if (user.completedCategories[category]) {
-          categoryElement.textContent = "✔️";
-          categoryElement.classList.remove("category-invalid");
-          categoryElement.classList.add("category-valid");
-        } else {
-          categoryElement.textContent = "❌";
-          categoryElement.classList.remove("category-valid");
-          categoryElement.classList.add("category-invalid");
-        }
-      });
-    }
-
-    function selectLevel(level) {
-      if (user.level !== level && !document.getElementById(`level${level}`).disabled) {
-        user.level = level;
-        localStorage.setItem("user", JSON.stringify(user));
-        updateLevelButtons();
-      }
-    }
-
-    function chooseCategory() {
-      document.getElementById('welcomeCard').classList.add('hidden');
-      document.getElementById('categorySelection').classList.remove('hidden');
-    }
-
-    // Select category and show questions
-    let currentCategory = '';
-    let currentQuestionIndex = 0;
-
-    function selectCategory(category) {
-      currentCategory = category;
-      currentQuestionIndex = 0;
-      document.getElementById('categorySelection').classList.add('hidden');
-
-      if (questions[category].length > 0) {
-        showQuestion();
-      } else {
-        alert("Aucune question disponible dans cette catégorie. Veuillez vérifier avec l'administrateur.");
-        navigate('dashboard');
-      }
-    }
-
-    function showQuestion() {
-      document.getElementById('quizQuestion').classList.remove('hidden');
-      const currentQuestion = questions[currentCategory][currentQuestionIndex];
-      document.getElementById('questionText').textContent = currentQuestion.question;
-      document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} of ${questions[currentCategory].length}`;
-
-      const answersContainer = document.getElementById('answers');
-      answersContainer.innerHTML = '';
-      currentQuestion.answers.forEach(answer => {
-        answersContainer.innerHTML += `
-          <button onclick="selectAnswer('${answer}')" class="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition">
-            ${answer}
-          </button>
-        `;
-      });
-    }
-
-    function selectAnswer(answer) {
-      const currentQuestion = questions[currentCategory][currentQuestionIndex];
-      if (answer === currentQuestion.correct) {
-        user.score++;
-      }
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questions[currentCategory].length) {
-        showQuestion();
-      } else {
-        finishCategory();
-      }
-    }
-
-    function finishCategory() {
-      document.getElementById('quizQuestion').classList.add('hidden');
-      user.completedCategories[currentCategory] = true;
-      localStorage.setItem("user", JSON.stringify(user));
-      updateCategoryStatus();
-      alert(`Quiz terminé pour ${currentCategory}!`);
-      navigate('dashboard');
-    }
-
-    // Helper function to navigate back to the dashboard
-    function navigate(section) {
-      document.getElementById('welcomeCard').classList.remove('hidden');
-      document.getElementById('categorySelection').classList.add('hidden');
-      document.getElementById('quizQuestion').classList.add('hidden');
-    }
-  </script>
 </body>
 </html>
