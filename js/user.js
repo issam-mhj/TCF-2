@@ -1,4 +1,4 @@
-// user.js - Independent Level and Category Management
+// user.js - Enhanced Quiz Application with Report Data Collection
 
 let filteredQuestions = [];
 let currentCategory = '';
@@ -8,6 +8,7 @@ let timer;
 let timeLeft;
 let score = 0;
 let allAnswersCorrect = true;
+let userAnswers = []; // To store user answers for reporting
 
 // Initialize User Dashboard
 function initializeUserDashboard() {
@@ -68,7 +69,6 @@ function startLevel(level) {
         const currentIndex = NVs.indexOf(currentUser.NV);
         const requestedIndex = NVs.indexOf(level);
 
-        // Ensure user can only access the current level or previously completed levels
         if (requestedIndex > currentIndex) {
             alert("Ce niveau est verrouillé. Veuillez terminer le niveau précédent.");
             return;
@@ -80,6 +80,7 @@ function startLevel(level) {
     currentQuestionIndex = 0;
     score = 0;
     allAnswersCorrect = true;
+    userAnswers = []; // Reset answers for the new level
 
     document.getElementById('welcomeCard').classList.add('hidden');
     document.getElementById('categorySelection').classList.remove('hidden');
@@ -117,10 +118,12 @@ function chooseCategory() {
 
 // Select Category
 function selectCategory(category) {
+    console.log(`Category selected: ${category}`);
     currentCategory = category;
     currentQuestionIndex = 0;
     score = 0;
     allAnswersCorrect = true;
+    userAnswers = []; // Reset user answers for this category
 
     document.getElementById('categorySelection').classList.add('hidden');
     document.getElementById('quizStart').classList.remove('hidden');
@@ -208,6 +211,7 @@ function startTimer(duration) {
             clearInterval(timer);
             alert("Temps écoulé!");
             allAnswersCorrect = false;
+            userAnswers.push({ question: filteredQuestions[currentQuestionIndex].question, correct: false, answer: "Temps écoulé" });
             currentQuestionIndex++;
             showQuestion();
         }
@@ -217,34 +221,25 @@ function startTimer(duration) {
 // Handle Answer Selection
 function selectAnswer(question, selectedAnswer) {
     clearInterval(timer);
+    const isCorrect = (question.correctOption === selectedAnswer);
+    userAnswers.push({
+        question: question.question,
+        correct: isCorrect,
+        answer: selectedAnswer,
+        correctAnswer: question.correctOption
+    });
 
-    const currentUserStr = localStorage.getItem("currentUser");
-    if (currentUserStr) {
-        let user = JSON.parse(currentUserStr);
+    if (isCorrect) {
+        score += 10;
+    } else {
+        allAnswersCorrect = false;
+    }
 
-        if (!user.completedCategories) {
-            user.completedCategories = {
-                "A1": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false },
-                "A2": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false },
-                "B1": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false },
-                "B2": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false },
-                "C1": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false },
-                "C2": { "Grammaire": false, "Vocabulaire": false, "Compréhension": false }
-            };
-        }
-
-        if (question.correctOption === selectedAnswer) {
-            score += 10;
-        } else {
-            allAnswersCorrect = false;
-        }
-
-        currentQuestionIndex++;
-        if (currentQuestionIndex < filteredQuestions.length) {
-            showQuestion();
-        } else {
-            finishCategory(user);
-        }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < filteredQuestions.length) {
+        showQuestion();
+    } else {
+        finishCategory(JSON.parse(localStorage.getItem("currentUser")));
     }
 }
 
@@ -252,11 +247,28 @@ function selectAnswer(question, selectedAnswer) {
 function finishCategory(user) {
     document.getElementById('quizQuestion').classList.add('hidden');
 
-    user.completedCategories = user.completedCategories || {};
+    if (!user.completedCategories) {
+        user.completedCategories = {};
+    }
     if (!user.completedCategories[currentLevel]) {
         user.completedCategories[currentLevel] = { "Grammaire": false, "Vocabulaire": false, "Compréhension": false };
     }
+
     user.completedCategories[currentLevel][currentCategory] = true;
+    
+    // Save Quiz Report Data
+    if (!user.reports) {
+        user.reports = {};
+    }
+    if (!user.reports[currentLevel]) {
+        user.reports[currentLevel] = {};
+    }
+    user.reports[currentLevel][currentCategory] = {
+        questions: userAnswers,
+        score: score,
+        level: currentLevel
+    };
+
     alert(`Félicitations! Vous avez terminé la catégorie ${currentCategory} avec un score de ${score} points!`);
 
     localStorage.setItem("currentUser", JSON.stringify(user));
