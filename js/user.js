@@ -1,7 +1,14 @@
-// Declare filteredQuestions as a global variable so it can be accessed by multiple functions
+// user.js - Enhanced Quiz Application with Report Data Collection
+
 let filteredQuestions = [];
 let currentCategory = '';
 let currentQuestionIndex = 0;
+let currentLevel = '';
+let timer;
+let timeLeft;
+let score = 0;
+let allAnswersCorrect = true;
+let userAnswers = []; // To store user answers for reporting
 
 // Initialize User Dashboard
 function initializeUserDashboard() {
@@ -9,13 +16,12 @@ function initializeUserDashboard() {
     if (currentUserStr) {
         try {
             const currentUser = JSON.parse(currentUserStr);
-            console.log("Current User: ", currentUser);
             if (currentUser && currentUser.username && currentUser.NV) {
                 document.getElementById('username').textContent = `Utilisateur: ${currentUser.username}`;
                 updateNVButtons(currentUser);
-                updateCategoryStatus(currentUser);
+                updateCategoryStatus(currentUser, currentUser.NV);
+                checkAllCategoriesCompleted(currentUser);
             } else {
-                console.error("User NV level not found or incomplete user data.");
                 alert("User data is incomplete. Please log out and log in again.");
                 logoutUser();
             }
@@ -32,39 +38,80 @@ function initializeUserDashboard() {
 function updateNVButtons(user) {
     const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
     NVs.forEach((NV, index) => {
-        const button = document.getElementById(`NV${NV}`);
-        if (index === 0 || (user.NV === NVs[index - 1] && user.completedCategories[user.NV])) {
-            button.classList.remove("level-locked");
-            button.classList.add("level-unlocked");
-            button.disabled = false;
+        const button = document.getElementById(`NV_${NV}`);
+        if (button) {
+            if (index === 0 || NV === user.NV || index < NVs.indexOf(user.NV)) {
+                button.classList.remove("level-locked");
+                button.classList.add("level-unlocked", "level-completed");
+                button.disabled = false;
+                button.onclick = () => {
+                    startLevel(NV);
+                    updateCategoryStatus(user, NV);
+                };
+            } else {
+                button.classList.remove("level-unlocked", "level-completed");
+                button.classList.add("level-locked");
+                button.disabled = true;
+                button.onclick = () => alert("Ce niveau est verrouillé. Veuillez terminer le niveau précédent.");
+            }
         } else {
-            button.classList.remove("level-unlocked");
-            button.classList.add("level-locked");
-            button.disabled = true;
+            console.warn(`Button for level ${NV} not found.`);
         }
     });
 }
 
+// Start Level
+function startLevel(level) {
+    const currentUserStr = localStorage.getItem("currentUser");
+    if (currentUserStr) {
+        const currentUser = JSON.parse(currentUserStr);
+        const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
+        const currentIndex = NVs.indexOf(currentUser.NV);
+        const requestedIndex = NVs.indexOf(level);
+
+        if (requestedIndex > currentIndex) {
+            alert("Ce niveau est verrouillé. Veuillez terminer le niveau précédent.");
+            return;
+        }
+    }
+
+    currentLevel = level;
+    currentCategory = '';
+    currentQuestionIndex = 0;
+    score = 0;
+    allAnswersCorrect = true;
+    userAnswers = []; // Reset answers for the new level
+
+    document.getElementById('welcomeCard').classList.add('hidden');
+    document.getElementById('categorySelection').classList.remove('hidden');
+    document.getElementById('levelSelected').textContent = `Niveau ${level}`;
+
+    updateCategoryStatus(JSON.parse(currentUserStr), level);
+}
+
 // Update Category Status
-function updateCategoryStatus(user) {
+function updateCategoryStatus(user, level) {
     const categories = ["Grammaire", "Vocabulaire", "Compréhension"];
     categories.forEach((category) => {
         const categoryElement = document.getElementById(`category${category}`);
-        if (user.completedCategories[category]) {
-            categoryElement.textContent = "✔️";
-            categoryElement.classList.remove("category-invalid");
-            categoryElement.classList.add("category-valid");
+        if (categoryElement) {
+            if (user.completedCategories && user.completedCategories[level] && user.completedCategories[level][category]) {
+                categoryElement.textContent = "✔️";
+                categoryElement.classList.remove("category-invalid");
+                categoryElement.classList.add("category-valid");
+            } else {
+                categoryElement.textContent = "❌";
+                categoryElement.classList.remove("category-valid");
+                categoryElement.classList.add("category-invalid");
+            }
         } else {
-            categoryElement.textContent = "❌";
-            categoryElement.classList.remove("category-valid");
-            categoryElement.classList.add("category-invalid");
+            console.warn(`Category element for ${category} not found.`);
         }
     });
 }
 
 // Choose Category
 function chooseCategory() {
-    console.log("Choosing category...");
     document.getElementById('welcomeCard').classList.add('hidden');
     document.getElementById('categorySelection').classList.remove('hidden');
 }
@@ -74,11 +121,14 @@ function selectCategory(category) {
     console.log(`Category selected: ${category}`);
     currentCategory = category;
     currentQuestionIndex = 0;
+    score = 0;
+    allAnswersCorrect = true;
+    userAnswers = []; // Reset user answers for this category
+
     document.getElementById('categorySelection').classList.add('hidden');
     document.getElementById('quizStart').classList.remove('hidden');
-    document.getElementById('selectedCategory').textContent = currentCategory;
+    document.getElementById('selectedCategory').textContent = `${currentCategory} - Niveau ${currentLevel}`;
 
-    // Retrieve current user and filter questions based on selected category and user's NV level
     const currentUserStr = localStorage.getItem("currentUser");
     let currentUser;
 
@@ -94,9 +144,12 @@ function selectCategory(category) {
 
     if (currentUser && currentUser.NV) {
         filteredQuestions = questions.filter(
-            question => question.categ && question.categ.toLowerCase() === currentCategory.toLowerCase() && question.NV === currentUser.NV
+            question => question.categ &&
+                (question.categ.toLowerCase() === currentCategory.toLowerCase() ||
+                 (currentCategory.toLowerCase() === 'vocabulaire' && question.categ.toLowerCase() === 'vocab') ||
+                 (currentCategory.toLowerCase() === 'compréhension' && question.categ.toLowerCase() === 'comp')) &&
+                question.NV.toLowerCase() === currentLevel.toLowerCase()
         );
-        console.log("Filtered questions: ", filteredQuestions);
     } else {
         console.error("User NV level not found.");
     }
@@ -109,7 +162,6 @@ function selectCategory(category) {
 
 // Start Quiz
 function startQuiz() {
-    console.log("Starting quiz...");
     document.getElementById('quizStart').classList.add('hidden');
     if (filteredQuestions.length > 0) {
         showQuestion();
@@ -118,16 +170,13 @@ function startQuiz() {
     }
 }
 
-// Show Quiz Question
+// Show Quiz Question with Timer
 function showQuestion() {
-    console.log("Showing question...");
     if (currentQuestionIndex < filteredQuestions.length) {
         document.getElementById('quizQuestion').classList.remove('hidden');
         const currentQuestion = filteredQuestions[currentQuestionIndex];
-        console.log("Current Question: ", currentQuestion);
-
         document.getElementById('questionText').textContent = currentQuestion.question;
-        document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} of ${filteredQuestions.length}`;
+        document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} sur ${filteredQuestions.length}`;
 
         const answersContainer = document.getElementById('answers');
         answersContainer.innerHTML = '';
@@ -137,62 +186,124 @@ function showQuestion() {
                 const answerButton = document.createElement('button');
                 answerButton.className = "bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition";
                 answerButton.textContent = currentQuestion[option];
-                answerButton.onclick = () => selectAnswer(currentQuestion.correctOption, currentQuestion[option]);
+                answerButton.onclick = () => selectAnswer(currentQuestion, currentQuestion[option]);
                 answersContainer.appendChild(answerButton);
             }
         });
+
+        startTimer(60);
     } else {
-        console.error("No more questions available.");
-        showResults();
+        finishCategory();
     }
 }
 
-// Handle Answer Selection
-function selectAnswer(correctAnswer, selectedAnswer) {
-    console.log(`Answer selected: ${selectedAnswer}, Correct answer: ${correctAnswer}`);
-    const currentUserStr = localStorage.getItem("currentUser");
-    if (currentUserStr) {
-        let user = JSON.parse(currentUserStr);
+// Timer Logic
+function startTimer(duration) {
+    clearInterval(timer);
+    timeLeft = duration;
+    document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
 
-        if (correctAnswer === selectedAnswer) {
-            user.score++;
-            console.log("Correct answer selected. Score: ", user.score);
-        } else {
-            console.log("Incorrect answer selected.");
-        }
+    timer = setInterval(() => {
+        timeLeft -= 1;
+        document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
 
-        currentQuestionIndex++;
-        if (currentQuestionIndex < filteredQuestions.length) {
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Temps écoulé!");
+            allAnswersCorrect = false;
+            userAnswers.push({ question: filteredQuestions[currentQuestionIndex].question, correct: false, answer: "Temps écoulé" });
+            currentQuestionIndex++;
             showQuestion();
-        } else {
-            finishCategory(user);
         }
+    }, 1000);
+}
+
+// Handle Answer Selection
+function selectAnswer(question, selectedAnswer) {
+    clearInterval(timer);
+    const isCorrect = (question.correctOption === selectedAnswer);
+    userAnswers.push({
+        question: question.question,
+        correct: isCorrect,
+        answer: selectedAnswer,
+        correctAnswer: question.correctOption
+    });
+
+    if (isCorrect) {
+        score += 10;
+    } else {
+        allAnswersCorrect = false;
+    }
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < filteredQuestions.length) {
+        showQuestion();
+    } else {
+        finishCategory(JSON.parse(localStorage.getItem("currentUser")));
     }
 }
 
 // Finish Quiz Category
 function finishCategory(user) {
-    console.log("Finishing category quiz...");
     document.getElementById('quizQuestion').classList.add('hidden');
-    user.completedCategories[currentCategory] = true;
-    localStorage.setItem(user.username, JSON.stringify(user));
-    updateCategoryStatus(user);
-    alert(`Quiz terminé pour ${currentCategory}!`);
-    navigate('dashboard');
+
+    if (!user.completedCategories) {
+        user.completedCategories = {};
+    }
+    if (!user.completedCategories[currentLevel]) {
+        user.completedCategories[currentLevel] = { "Grammaire": false, "Vocabulaire": false, "Compréhension": false };
+    }
+
+    user.completedCategories[currentLevel][currentCategory] = true;
+    
+    // Save Quiz Report Data
+    if (!user.reports) {
+        user.reports = {};
+    }
+    if (!user.reports[currentLevel]) {
+        user.reports[currentLevel] = {};
+    }
+    user.reports[currentLevel][currentCategory] = {
+        questions: userAnswers,
+        score: score,
+        level: currentLevel
+    };
+
+    alert(`Félicitations! Vous avez terminé la catégorie ${currentCategory} avec un score de ${score} points!`);
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    updateCategoryStatus(user, currentLevel);
+    checkAllCategoriesCompleted(user);
 }
 
-// Navigate Between Sections
-function navigate(section) {
-    console.log(`Navigating to section: ${section}`);
-    document.getElementById('welcomeCard').classList.remove('hidden');
-    document.getElementById('categorySelection').classList.add('hidden');
-    document.getElementById('quizQuestion').classList.add('hidden');
-    document.getElementById('quizStart').classList.add('hidden');
+// Check if All Categories are Completed and Unlock Next Level
+function checkAllCategoriesCompleted(user) {
+    if (user.completedCategories[currentLevel] && Object.values(user.completedCategories[currentLevel]).every(val => val) && user.NV !== "C2") {
+        moveToNextLevel(user);
+    }
+}
+
+// Move to Next Level
+function moveToNextLevel(user) {
+    const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
+    const currentIndex = NVs.indexOf(user.NV);
+    if (currentIndex < NVs.length - 1) {
+        user.NV = NVs[currentIndex + 1];
+        if (!user.completedCategories[user.NV]) {
+            user.completedCategories[user.NV] = { "Grammaire": false, "Vocabulaire": false, "Compréhension": false };
+        }
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        alert(`Félicitations! Vous avez débloqué le niveau ${user.NV}`);
+        updateNVButtons(user);
+        startLevel(user.NV);
+    } else {
+        alert("Vous avez terminé tous les niveaux disponibles !");
+    }
 }
 
 // Logout User
 function logoutUser() {
-    console.log("User logged out.");
     localStorage.removeItem("currentUser");
     window.location.href = 'first.html';
 }
