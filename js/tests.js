@@ -1237,8 +1237,8 @@ const questions = [
         NV: "A1",
 
         option1: "habites",
-        option2: " habite",
-        option3: " habitons",
+        option2: "habite",
+        option3: "habitons",
         option4: "habit",
         correctOption: "habite",
 
@@ -1864,51 +1864,52 @@ function saveQuestion() {
     const questionText = document.getElementById('newQuestionText').value;
     const level = document.getElementById('newQuestionLevel').value;
     const category = document.getElementById('newQuestionCategory').value;
-    const correctAnswer = document.getElementById('correctAnswer').value;
-    let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-    let op2 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-    let op3 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-    let op4 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
+    const correctAnswer = document.getElementById('correctAnswer').value; 
+    let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value; 
+    let op2 = document.querySelectorAll('#newQuestionAnswers input')[1].value; 
+    let op3 = document.querySelectorAll('#newQuestionAnswers input')[2].value; 
+    let op4 = document.querySelectorAll('#newQuestionAnswers input')[3].value; 
 
-    if (questionText && level && category && correctAnswer) {
-        question = {
-        question: questionText,
-        option1: op1,
-        option2: op2,
-        option3: op3,
-        option4: op4,
-        correctOption: correctAnswer,
-        categ: category,
-        NV: level,
-      }
-      questions.push(question);
-      let ques = question.question;
-      let categ = question.categ;
-      let nv = question.NV;
-      let opt1 = question.option1;
-      let opt2 = question.option2;
-      let opt3 = question.option3;
-      let opt4 = question.option4;
-      let correctop = question.correctOption;
-      local.setItem(`questions${questions.length}`, ques);
-      local.setItem(`category${questions.length}`, categ);
-      local.setItem(`niveau${questions.length}`, nv);
-      local.setItem(`option1${questions.length}`, opt1);
-      local.setItem(`option2${questions.length}`, opt2);
-      local.setItem(`option3${questions.length}`, opt3);
-      local.setItem(`opt4${questions.length}`, opt4);
-      local.setItem(`correctoption${questions.length}`, correctop);
-      console.log(questions.length);
-    }else {
-     alert('Veuillez remplir tous les champs.');
-    }
-    console.log(questions[questions.length-1]);
-    console.log(questions.length);
-    document.getElementById('addQuestionForm').classList.add('hidden');
-    renderQuestions();
-};
+    if (questionText && level && category && correctAnswer) { 
+        question = { 
+            question: questionText, 
+            option1: op1, 
+            option2: op2, 
+            option3: op3, 
+            option4: op4, 
+            correctOption: correctAnswer, 
+            categ: category, 
+            NV: level, 
+        }; 
+        questions.push(question); 
 
+        let index = localStorage.length / 8; 
+        let ques = question.question; 
+        let categ = question.categ; 
+        let nv = question.NV; 
+        let opt1 = question.option1; 
+        let opt2 = question.option2; 
+        let opt3 = question.option3; 
+        let opt4 = question.option4; 
+        let correctop = question.correctOption; 
 
+        localStorage.setItem(`questions${index}`, ques); 
+        localStorage.setItem(`category${index}`, categ); 
+        localStorage.setItem(`niveau${index}`, nv); 
+        localStorage.setItem(`option1${index}`, opt1); 
+        localStorage.setItem(`option2${index}`, opt2); 
+        localStorage.setItem(`option3${index}`, opt3); 
+        localStorage.setItem(`opt4${index}`, opt4); 
+        localStorage.setItem(`correctoption${index}`, correctop); 
+        console.log(questions.length); 
+    } else { 
+        alert('Veuillez remplir tous les champs. '); 
+    } 
+    console.log(questions[questions.length - 1]); 
+    console.log(questions.length); 
+    document.getElementById('addQuestionForm').classList.add('hidden'); 
+    renderQuestions(); 
+}
 function renderQuestions() {
     const questionsListDiv = document.getElementById('questionsList');
     questionsListDiv.innerHTML = '';
@@ -1935,8 +1936,21 @@ function renderQuestions() {
         const questionHtml = `
             <div class="p-4 border mb-4 rounded-lg shadow-md">
                 <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
-                <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
-                <button onclick="modifyQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+                <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 mt-[10px] w-[20%]">Supprimer</button>
+                <button onclick="editQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600 mt-[10px] w-[20%] ">modifier</button>
+                <div id="questionInfo${index}" class="hidden p-3 mt-3 border rounded-lg bg-gray-100">
+                    <p><strong>Option 1:</strong> ${question.option1}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 2:</strong> ${question.option2}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 3:</strong> ${question.option3}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 4:</strong> ${question.option4}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Correct Option:</strong> ${question.correctOption}</p>
+                    <input type="text" placeholder="your modification">
+                    <br><button class="bg-green-500 px-[3px] py-[1px] rounded-lg mt-[10px] ">submit<button>
+                </div>
             </div>
         `;
         questionsListDiv.innerHTML += questionHtml;
@@ -1953,12 +1967,74 @@ function deleteQuestion(index) {
         localStorage.removeItem(`option3${index}`);
         localStorage.removeItem(`opt4${index}`);
         localStorage.removeItem(`correctoption${index}`);
-        renderQuestions();
+
+        const numberOfQuestions = localStorage.length / 8;
+        for (let i = index; i < numberOfQuestions; i++) {
+            localStorage.setItem(`questions${i}`, localStorage.getItem(`questions${i + 1}`));
+            localStorage.setItem(`category${i}`, localStorage.getItem(`category${i + 1}`));
+            localStorage.setItem(`niveau${i}`, localStorage.getItem(`niveau${i + 1}`));
+            localStorage.setItem(`option1${i}`, localStorage.getItem(`option1${i + 1}`));
+            localStorage.setItem(`option2${i}`, localStorage.getItem(`option2${i + 1}`));
+            localStorage.setItem(`option3${i}`, localStorage.getItem(`option3${i + 1}`));
+            localStorage.setItem(`opt4${i}`, localStorage.getItem(`opt4${i + 1}`));
+            localStorage.setItem(`correctoption${i}`, localStorage.getItem(`correctoption${i + 1}`));
+
+            localStorage.removeItem(`questions${i + 1}`);
+            localStorage.removeItem(`category${i + 1}`);
+            localStorage.removeItem(`niveau${i + 1}`);
+            localStorage.removeItem(`option1${i + 1}`);
+            localStorage.removeItem(`option2${i + 1}`);
+            localStorage.removeItem(`option3${i + 1}`);
+            localStorage.removeItem(`opt4${i + 1}`);
+            localStorage.removeItem(`correctoption${i + 1}`);
+        }
+
+        renderQuestions(); 
     }
 }
 
-function modifyQuestion(){
+function editQuestion(index) {
+    const questionInfoDiv = document.getElementById(`questionInfo${index}`);
+    const question = {
+        question: localStorage.getItem(`questions${index}`),
+        categ: localStorage.getItem(`category${index}`),
+        NV: localStorage.getItem(`niveau${index}`),
+        option1: localStorage.getItem(`option1${index}`),
+        option2: localStorage.getItem(`option2${index}`),
+        option3: localStorage.getItem(`option3${index}`),
+        option4: localStorage.getItem(`opt4${index}`),
+        correctOption: localStorage.getItem(`correctoption${index}`)
+    };
 
+    questionInfoDiv.querySelectorAll('input')[0].value = question.option1;
+    questionInfoDiv.querySelectorAll('input')[1].value = question.option2;
+    questionInfoDiv.querySelectorAll('input')[2].value = question.option3;
+    questionInfoDiv.querySelectorAll('input')[3].value = question.option4;
+    questionInfoDiv.querySelectorAll('input')[4].value = question.correctOption;
+
+    questionInfoDiv.classList.toggle('hidden');
+
+    questionInfoDiv.querySelector('button').onclick = function() {
+        const updatedOp1 = questionInfoDiv.querySelectorAll('input')[0].value;
+        const updatedOp2 = questionInfoDiv.querySelectorAll('input')[1].value;
+        const updatedOp3 = questionInfoDiv.querySelectorAll('input')[2].value;
+        const updatedOp4 = questionInfoDiv.querySelectorAll('input')[3].value;
+        const updatedCorrectOp = questionInfoDiv.querySelectorAll('input')[4].value;
+
+        if (updatedOp1 && updatedOp2 && updatedOp3 && updatedOp4 && updatedCorrectOp) {
+            localStorage.setItem(`questions${index}`, question.question);
+            localStorage.setItem(`category${index}`, question.categ);
+            localStorage.setItem(`niveau${index}`, question.NV);
+            localStorage.setItem(`option1${index}`, updatedOp1);
+            localStorage.setItem(`option2${index}`, updatedOp2);
+            localStorage.setItem(`option3${index}`, updatedOp3);
+            localStorage.setItem(`opt4${index}`, updatedOp4);
+            localStorage.setItem(`correctoption${index}`, updatedCorrectOp);
+
+            alert("Question updated successfully!");
+            renderQuestions(); 
+        } else {
+            alert("Please fill in all fields.");
+        }
+    };
 }
-
-// localStorage.removeItem(keyName);
