@@ -1237,8 +1237,8 @@ const questions = [
         NV: "A1",
 
         option1: "habites",
-        option2: " habite",
-        option3: " habitons",
+        option2: "habite",
+        option3: "habitons",
         option4: "habit",
         correctOption: "habite",
 
@@ -1308,11 +1308,11 @@ const questions = [
         categ: "Grammaire",
         NV: "A1",
 
-        option1: "Elle non aime la musique. ",
+        option1: "Elle non aime la musique.",
         option2: "Elle ne aime pas la musique.",
-        option3: " Elle n'aime pas la musique.",
+        option3: "Elle n'aime pas la musique.",
         option4: "Elle aime pas la musique.",
-        correctOption: "Elle n'aime pas la musique.."
+        correctOption: "Elle n'aime pas la musique."
 
     },
     //========****A2****========//
@@ -1826,140 +1826,278 @@ const questions = [
         },
     ]
 
-    const local = window.localStorage;
-    for(let i=0;i<questions.length;i++){
-        let ques = questions[i].question;
-        let categ = questions[i].categ;
-        let nv = questions[i].NV;
-        let op1 = questions[i].option1;
-        let op2 = questions[i].option2;
-        let op3 = questions[i].option3;
-        let op4 = questions[i].option4;
-        let correctop = questions[i].correctOption;
-        local.setItem(`questions${i}`, ques);
-        local.setItem(`category${i}`, categ);
-        local.setItem(`niveau${i}`, nv);
-        local.setItem(`option1${i}`, op1);
-        local.setItem(`option2${i}`, op2);
-        local.setItem(`option3${i}`, op3);
-        local.setItem(`opt4${i}`, op4);
-        local.setItem(`correctoption${i}`, correctop);
+const local = window.localStorage;
+for(let i=0;i<questions.length;i++){
+    let ques = questions[i].question;
+    let categ = questions[i].categ;
+    let nv = questions[i].NV;
+    let op1 = questions[i].option1;
+    let op2 = questions[i].option2;
+    let op3 = questions[i].option3;
+    let op4 = questions[i].option4;
+    let correctop = questions[i].correctOption;
+    local.setItem(`questions${i}`, ques);
+    local.setItem(`category${i}`, categ);
+    local.setItem(`niveau${i}`, nv);
+    local.setItem(`option1${i}`, op1);
+    local.setItem(`option2${i}`, op2);
+    local.setItem(`option3${i}`, op3);
+    local.setItem(`opt4${i}`, op4);
+    local.setItem(`correctoption${i}`, correctop);
+}
+console.log(questions.length);
+
+
+function navigate(section) {
+    document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
+    document.getElementById(section).classList.remove('hidden');
     }
-    console.log(questions.length);
-    
-    
-    function navigate(section) {
-        document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
-        document.getElementById(section).classList.remove('hidden');
-        }
-    
-    function displayAddQuestionForm() {
-        document.getElementById('addQuestionForm').classList.toggle('hidden');
+
+function displayAddQuestionForm() {
+    document.getElementById('addQuestionForm').classList.toggle('hidden');
+}
+renderQuestions();
+
+let question;
+
+function saveQuestion() {
+    const questionText = document.getElementById('newQuestionText').value;
+    const level = document.getElementById('newQuestionLevel').value;
+    const category = document.getElementById('newQuestionCategory').value;
+    const correctAnswer = document.getElementById('correctAnswer').value; 
+    let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value; 
+    let op2 = document.querySelectorAll('#newQuestionAnswers input')[1].value; 
+    let op3 = document.querySelectorAll('#newQuestionAnswers input')[2].value; 
+    let op4 = document.querySelectorAll('#newQuestionAnswers input')[3].value; 
+
+    if (questionText && level && category && correctAnswer) { 
+        question = { 
+            question: questionText, 
+            option1: op1, 
+            option2: op2, 
+            option3: op3, 
+            option4: op4, 
+            correctOption: correctAnswer, 
+            categ: category, 
+            NV: level, 
+        }; 
+        questions.push(question);
+
+        let index = localStorage.length / 8; 
+        let ques = question.question; 
+        let categ = question.categ; 
+        let nv = question.NV; 
+        let opt1 = question.option1; 
+        let opt2 = question.option2; 
+        let opt3 = question.option3; 
+        let opt4 = question.option4; 
+        let correctop = question.correctOption; 
+
+        localStorage.setItem(`questions${index}`, ques); 
+        localStorage.setItem(`category${index}`, categ); 
+        localStorage.setItem(`niveau${index}`, nv); 
+        localStorage.setItem(`option1${index}`, opt1); 
+        localStorage.setItem(`option2${index}`, opt2); 
+        localStorage.setItem(`option3${index}`, opt3); 
+        localStorage.setItem(`opt4${index}`, opt4); 
+        localStorage.setItem(`correctoption${index}`, correctop); 
+        console.log(questions.length); 
+    } else { 
+        alert('Veuillez remplir tous les champs. '); 
+    } 
+    console.log(questions[questions.length - 1]); 
+    console.log(questions.length); 
+    document.getElementById('addQuestionForm').classList.add('hidden'); 
+    renderQuestions(); 
+}
+function renderQuestions() {
+    const questionsListDiv = document.getElementById('questionsList');
+    questionsListDiv.innerHTML = '';
+
+    const questionsList = [];
+
+    const numberOfQuestions = localStorage.length / 8; 
+
+    for (let i = 0; i < numberOfQuestions; i++) {
+        const question = {
+            question: localStorage.getItem(`questions${i}`),
+            categ: localStorage.getItem(`category${i}`),
+            NV: localStorage.getItem(`niveau${i}`),
+            option1: localStorage.getItem(`option1${i}`),
+            option2: localStorage.getItem(`option2${i}`),
+            option3: localStorage.getItem(`option3${i}`),
+            option4: localStorage.getItem(`opt4${i}`),
+            correctOption: localStorage.getItem(`correctoption${i}`)
+        };
+        questionsList.push(question);
     }
-    renderQuestions();
-    
-    let question;
-    
-    function saveQuestion() {
-        const questionText = document.getElementById('newQuestionText').value;
-        const level = document.getElementById('newQuestionLevel').value;
-        const category = document.getElementById('newQuestionCategory').value;
-        const correctAnswer = document.getElementById('correctAnswer').value;
-        let op1 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-        let op2 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-        let op3 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-        let op4 = document.querySelectorAll('#newQuestionAnswers input')[0].value;
-    
-        if (questionText && level && category && correctAnswer) {
-            question = {
-            question: questionText,
-            option1: op1,
-            option2: op2,
-            option3: op3,
-            option4: op4,
-            correctOption: correctAnswer,
-            categ: category,
-            NV: level,
-          }
-          questions.push(question);
-          let ques = question.question;
-          let categ = question.categ;
-          let nv = question.NV;
-          let opt1 = question.option1;
-          let opt2 = question.option2;
-          let opt3 = question.option3;
-          let opt4 = question.option4;
-          let correctop = question.correctOption;
-          local.setItem(`questions${questions.length}`, ques);
-          local.setItem(`category${questions.length}`, categ);
-          local.setItem(`niveau${questions.length}`, nv);
-          local.setItem(`option1${questions.length}`, opt1);
-          local.setItem(`option2${questions.length}`, opt2);
-          local.setItem(`option3${questions.length}`, opt3);
-          local.setItem(`opt4${questions.length}`, opt4);
-          local.setItem(`correctoption${questions.length}`, correctop);
-          console.log(questions.length);
-        }else {
-         alert('Veuillez remplir tous les champs.');
-        }
-        console.log(questions[questions.length-1]);
-        console.log(questions.length);
-        document.getElementById('addQuestionForm').classList.add('hidden');
-        renderQuestions();
-    };
-    
-    
-    function renderQuestions() {
-        const questionsListDiv = document.getElementById('questionsList');
-        questionsListDiv.innerHTML = '';
-    
-        const questionsList = [];
-    
-        const numberOfQuestions = localStorage.length / 8; 
-    
-        for (let i = 0; i < numberOfQuestions; i++) {
-            const question = {
-                question: localStorage.getItem(`questions${i}`),
-                categ: localStorage.getItem(`category${i}`),
-                NV: localStorage.getItem(`niveau${i}`),
-                option1: localStorage.getItem(`option1${i}`),
-                option2: localStorage.getItem(`option2${i}`),
-                option3: localStorage.getItem(`option3${i}`),
-                option4: localStorage.getItem(`opt4${i}`),
-                correctOption: localStorage.getItem(`correctoption${i}`)
-            };
-            questionsList.push(question);
-        }
-    
-        questionsList.forEach((question, index) => {
-            const questionHtml = `
-                <div class="p-4 border mb-4 rounded-lg shadow-md">
-                    <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
-                    <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Supprimer</button>
-                    <button onclick="modifyQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">modify</button>
+
+    questionsList.forEach((question, index) => {
+        const questionHtml = `
+            <div class="p-4 border mb-4 rounded-lg shadow-md">
+                <p class="text-lg font-bold">${question.NV} - ${question.categ}: ${question.question}</p>
+                <button onclick="deleteQuestion(${index})" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 mt-[10px] w-[20%]">Supprimer</button>
+                <button onclick="editQuestion(${index})" class="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600 mt-[10px] w-[20%] ">modifier</button>
+                <div id="questionInfo${index}" class="hidden p-3 mt-3 border rounded-lg bg-gray-100">
+                    <p><strong>Option 1:</strong> ${question.option1}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 2:</strong> ${question.option2}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 3:</strong> ${question.option3}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Option 4:</strong> ${question.option4}</p>
+                    <input type="text" placeholder="your modification">
+                    <p><strong>Correct Option:</strong> ${question.correctOption}</p>
+                    <input type="text" placeholder="your modification">
+                    <br><button class="bg-green-500 px-[3px] py-[1px] rounded-lg mt-[10px] ">submit<button>
                 </div>
-            `;
-            questionsListDiv.innerHTML += questionHtml;
-        });
-    }
-    
-    function deleteQuestion(index) {
-        if (confirm(localStorage.getItem(`questions${index}`))) {
-            localStorage.removeItem(`questions${index}`);
-            localStorage.removeItem(`category${index}`);
-            localStorage.removeItem(`niveau${index}`);
-            localStorage.removeItem(`option1${index}`);
-            localStorage.removeItem(`option2${index}`);
-            localStorage.removeItem(`option3${index}`);
-            localStorage.removeItem(`opt4${index}`);
-            localStorage.removeItem(`correctoption${index}`);
-            renderQuestions();
+            </div>
+        `;
+        questionsListDiv.innerHTML += questionHtml;
+    });
+}
+
+function deleteQuestion(index) {
+    if (confirm(localStorage.getItem(`questions${index}`))) {
+        localStorage.removeItem(`questions${index}`);
+        localStorage.removeItem(`category${index}`);
+        localStorage.removeItem(`niveau${index}`);
+        localStorage.removeItem(`option1${index}`);
+        localStorage.removeItem(`option2${index}`);
+        localStorage.removeItem(`option3${index}`);
+        localStorage.removeItem(`opt4${index}`);
+        localStorage.removeItem(`correctoption${index}`);
+
+        const numberOfQuestions = localStorage.length / 8;
+        for (let i = index; i < numberOfQuestions; i++) {
+            localStorage.setItem(`questions${i}`, localStorage.getItem(`questions${i + 1}`));
+            localStorage.setItem(`category${i}`, localStorage.getItem(`category${i + 1}`));
+            localStorage.setItem(`niveau${i}`, localStorage.getItem(`niveau${i + 1}`));
+            localStorage.setItem(`option1${i}`, localStorage.getItem(`option1${i + 1}`));
+            localStorage.setItem(`option2${i}`, localStorage.getItem(`option2${i + 1}`));
+            localStorage.setItem(`option3${i}`, localStorage.getItem(`option3${i + 1}`));
+            localStorage.setItem(`opt4${i}`, localStorage.getItem(`opt4${i + 1}`));
+            localStorage.setItem(`correctoption${i}`, localStorage.getItem(`correctoption${i + 1}`));
+
+            localStorage.removeItem(`questions${i + 1}`);
+            localStorage.removeItem(`category${i + 1}`);
+            localStorage.removeItem(`niveau${i + 1}`);
+            localStorage.removeItem(`option1${i + 1}`);
+            localStorage.removeItem(`option2${i + 1}`);
+            localStorage.removeItem(`option3${i + 1}`);
+            localStorage.removeItem(`opt4${i + 1}`);
+            localStorage.removeItem(`correctoption${i + 1}`);
         }
+
+        renderQuestions(); 
     }
-    
-    function modifyQuestion(){
-    
+}
+
+function editQuestion(index) {
+    const questionInfoDiv = document.getElementById(`questionInfo${index}`);
+    const question = {
+        question: localStorage.getItem(`questions${index}`),
+        categ: localStorage.getItem(`category${index}`),
+        NV: localStorage.getItem(`niveau${index}`),
+        option1: localStorage.getItem(`option1${index}`),
+        option2: localStorage.getItem(`option2${index}`),
+        option3: localStorage.getItem(`option3${index}`),
+        option4: localStorage.getItem(`opt4${index}`),
+        correctOption: localStorage.getItem(`correctoption${index}`)
+    };
+
+    questionInfoDiv.querySelectorAll('input')[0].value = question.option1;
+    questionInfoDiv.querySelectorAll('input')[1].value = question.option2;
+    questionInfoDiv.querySelectorAll('input')[2].value = question.option3;
+    questionInfoDiv.querySelectorAll('input')[3].value = question.option4;
+    questionInfoDiv.querySelectorAll('input')[4].value = question.correctOption;
+
+    questionInfoDiv.classList.toggle('hidden');
+
+    questionInfoDiv.querySelector('button').onclick = function() {
+        const updatedOp1 = questionInfoDiv.querySelectorAll('input')[0].value;
+        const updatedOp2 = questionInfoDiv.querySelectorAll('input')[1].value;
+        const updatedOp3 = questionInfoDiv.querySelectorAll('input')[2].value;
+        const updatedOp4 = questionInfoDiv.querySelectorAll('input')[3].value;
+        const updatedCorrectOp = questionInfoDiv.querySelectorAll('input')[4].value;
+
+        if (updatedOp1 && updatedOp2 && updatedOp3 && updatedOp4 && updatedCorrectOp) {
+            localStorage.setItem(`questions${index}`, question.question);
+            localStorage.setItem(`category${index}`, question.categ);
+            localStorage.setItem(`niveau${index}`, question.NV);
+            localStorage.setItem(`option1${index}`, updatedOp1);
+            localStorage.setItem(`option2${index}`, updatedOp2);
+            localStorage.setItem(`option3${index}`, updatedOp3);
+            localStorage.setItem(`opt4${index}`, updatedOp4);
+            localStorage.setItem(`correctoption${index}`, updatedCorrectOp);
+
+            alert("Question updated successfully!");
+            renderQuestions(); 
+        } else {
+            alert("Please fill in all fields.");
+        }
+    };
+}
+
+
+
+// user table**********************************************
+function displayScoreTable() {
+    const scoreTableBody = document.getElementById("userScoresList");
+    let users = JSON.parse(localStorage.getItem("users")) || []; 
+    console.log(users);
+    if (users.length > 0) {
+        let tableContent = "";
+        users.forEach((user, index) => {
+            tableContent += ` 
+            <tr class="hover:bg-gray-100 transition-colors duration-200"> 
+                <td class="font-semibold my-[4px]">${user.username}</td> 
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.NV || "A1"}</span> 
+                </td>  
+                <td class="my-[4px]">
+                    <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.score || 0}</span> 
+                </td>
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.time|| undefined}</span> 
+                </td>
+            </tr> 
+        `;
+        }); 
+        scoreTableBody.innerHTML = tableContent; 
+    } else {
+        scoreTableBody.innerHTML = "<tr><td colspan='3'>No users found.</td></tr>"; 
     }
-    
-    // localStorage.removeItem(keyName);
-    
+}
+displayScoreTable();
+function searchUser() {
+    const searchUsername = document.getElementById('searchUser').value;
+    const userStr = localStorage.getItem(searchUsername);
+
+    if (userStr) {
+        // Parse user data
+        const user = JSON.parse(userStr);
+
+        // Display user details
+        let tableContent = "";
+        const scoreTable = document.getElementById("userScoresList");
+        tableContent += ` 
+            <tr class="hover:bg-gray-100 transition-colors duration-200"> 
+                <td class="font-semibold my-[4px]">${user.username}</td> 
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.NV || "A1"}</span> 
+                </td>  
+                <td class="my-[4px]">
+                    <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.score || 0}</span> 
+                </td>
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.time|| undefined}</span> 
+                </td>
+            </tr> 
+        `;
+        scoreTable.innerHTML = tableContent; 
+    } else {
+        alert("User not found.");
+        scoreTable.innerHTML = '';
+    }
+}
