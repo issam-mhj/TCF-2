@@ -249,7 +249,7 @@ function selectAnswer(question, selectedAnswer) {
     });
 
     if (isCorrect) {
-        score += 10;
+        score += 1;
     } else {
         allAnswersCorrect = false;
     }

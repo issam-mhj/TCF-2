@@ -95,7 +95,7 @@
     <!-- General Stats Section -->
     <div id="generalStats" class="hidden w-full max-w-3xl mx-auto p-10 bg-white rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold mb-6">📈 Statistiques Générales et Tableau de Bord</h2>
-      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite Global : <strong id="successRate">0%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite Global : <strong id="successRate"><span id="x">0</span>%</strong></p>
       <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives par Niveau : <span id="attemptsByLevel"></span></p>
     </div>
 
@@ -106,6 +106,7 @@
       <button onclick="generatePDFReport()" class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600" id="pdf">Générer Rapport</button>
     </div>
   </section>
+  
 
   <!-- JavaScript -->
   <script src="js/tests.js" >
