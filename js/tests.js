@@ -2069,5 +2069,35 @@ function displayScoreTable() {
         scoreTableBody.innerHTML = "<tr><td colspan='3'>No users found.</td></tr>"; 
     }
 }
-
 displayScoreTable();
+function searchUser() {
+    const searchUsername = document.getElementById('searchUser').value;
+    const userStr = localStorage.getItem(searchUsername);
+
+    if (userStr) {
+        // Parse user data
+        const user = JSON.parse(userStr);
+
+        // Display user details
+        let tableContent = "";
+        const scoreTable = document.getElementById("userScoresList");
+        tableContent += ` 
+            <tr class="hover:bg-gray-100 transition-colors duration-200"> 
+                <td class="font-semibold my-[4px]">${user.username}</td> 
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.NV || "A1"}</span> 
+                </td>  
+                <td class="my-[4px]">
+                    <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.score || 0}</span> 
+                </td>
+                <td class="text-left flex items-center my-[4px]">
+                    <span class=" text-blue-500">${user.time|| undefined}</span> 
+                </td>
+            </tr> 
+        `;
+        scoreTable.innerHTML = tableContent; 
+    } else {
+        alert("User not found.");
+        scoreTable.innerHTML = '';
+    }
+}
