@@ -1,3 +1,5 @@
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
 // Show and hide sections
 function showLogin() {
   document.getElementById('logOrSign').classList.add('hidden');
@@ -33,7 +35,7 @@ function generateRandomId() {
   }
 
 // Sign up user and save to local storage
-function signUpUser() {
+function signUpUser () {
   const username = document.getElementById('signupUsername').value;
   if (!username) {
       alert("Please enter a username");
@@ -61,12 +63,19 @@ function signUpUser() {
   // Store user data as a JSON string
   localStorage.setItem(username, JSON.stringify(user));
   // Set current user for session
-  localStorage.setItem("currentUser", JSON.stringify(user));
+  localStorage.setItem("currentUser ", JSON.stringify(user));
+
+  // Create a user object and add it to the users array
+  const userObject = { username: username };
+  if (!users.some(u => u.username === username)) {
+      users.push(userObject); // Add the user object to the array
+      localStorage.setItem("users", JSON.stringify(users)); // Save the array as a string in local storage
+  }
+
   alert("Sign up successful! You can now log in.");
   document.getElementById('signupUsername').value = '';
   window.location.href = 'user.html'; // Redirect directly after sign up
 }
-
 // Login user by checking local storage
 function loginUser() {
   const username = document.getElementById('loginUsername').value;
