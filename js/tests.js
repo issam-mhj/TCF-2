@@ -1237,7 +1237,7 @@ const questions = [
         NV: "A1",
 
         option1: "habites",
-        option2: " habite",
+        option2: "habite",
         option3: " habitons",
         option4: "habit",
         correctOption: "habite",
@@ -1308,11 +1308,11 @@ const questions = [
         categ: "Grammaire",
         NV: "A1",
 
-        option1: "Elle non aime la musique. ",
+        option1: "Elle non aime la musique.",
         option2: "Elle ne aime pas la musique.",
-        option3: " Elle n'aime pas la musique.",
+        option3: "Elle n'aime pas la musique.",
         option4: "Elle aime pas la musique.",
-        correctOption: "Elle n'aime pas la musique.."
+        correctOption: "Elle n'aime pas la musique."
 
     },
     //========****A2****========//

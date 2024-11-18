@@ -1,4 +1,4 @@
-// user.js - Enhanced Quiz Application with Score Validation and Detailed Tracking
+// user.js
 
 let filteredQuestions = [];
 let currentCategory = '';
@@ -20,7 +20,6 @@ function initializeUserDashboard() {
                 document.getElementById('username').textContent = `Utilisateur: ${currentUser.username}`;
                 updateNVButtons(currentUser);
                 updateCategoryStatus(currentUser, currentUser.NV);
-                checkAllCategoriesCompleted(currentUser);
             } else {
                 alert("User data is incomplete. Please log out and log in again.");
                 logoutUser();
@@ -34,34 +33,85 @@ function initializeUserDashboard() {
     }
 }
 
-// Update Level Buttons
+// Update Level Buttons and Track Level Progress
 function updateNVButtons(user) {
     const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
     NVs.forEach((NV, index) => {
         const button = document.getElementById(`NV_${NV}`);
         if (button) {
             if (index === 0 || NV === user.NV || index < NVs.indexOf(user.NV)) {
+                if (index > 0) {
+                    const previousLevel = NVs[index - 1];
+                    const completedCategories = user.completedCategories[previousLevel] || {
+                        "Grammaire": false,
+                        "Vocabulaire": false,
+                        "Compréhension": false
+                    };
+                    const allCompleted = Object.values(completedCategories).every(status => status === true);
+                    if (!allCompleted) {
+                        button.classList.remove("level-unlocked");
+                        button.classList.add("level-locked");
+                        button.disabled = true;
+                        button.onclick = () => alert("Ce niveau est verrouillé. Veuillez terminer le niveau précédent.");
+                        return;
+                    }
+                }
                 button.classList.remove("level-locked");
-                button.classList.add("level-unlocked", "level-completed");
+                button.classList.add("level-unlocked");
                 button.disabled = false;
                 button.onclick = () => {
                     startLevel(NV);
                     updateCategoryStatus(user, NV);
                 };
             } else {
-                button.classList.remove("level-unlocked", "level-completed");
+                button.classList.remove("level-unlocked");
                 button.classList.add("level-locked");
                 button.disabled = true;
                 button.onclick = () => alert("Ce niveau est verrouillé. Veuillez terminer le niveau précédent.");
             }
-        } else {
-            console.warn(`Button for level ${NV} not found.`);
         }
     });
 }
 
+// Move to Next Level with Progress Reset
+function moveToNextLevel(user) {
+    const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
+    const currentIndex = NVs.indexOf(user.NV);
+    if (currentIndex < NVs.length - 1) {
+        const nextLevel = NVs[currentIndex + 1];
+        user.NV = nextLevel;
+        user.completedCategories[nextLevel] = {
+            "Grammaire": false,
+            "Vocabulaire": false,
+            "Compréhension": false
+        };
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.setItem(user.username, JSON.stringify(user));
+        updateNVButtons(user);
+        updateCategoryStatus(user, nextLevel);
+        alert(`Félicitations! Vous avez débloqué le niveau ${nextLevel}.`);
+    }
+}
+
+// Check if All Categories are Completed and Unlock Next Level
+function checkAllCategoriesCompleted(user) {
+    const categories = ["Grammaire", "Vocabulaire", "Compréhension"];
+    const completedCategories = user.completedCategories[currentLevel] || {};
+
+    // Only move to the next level if all categories are completed
+    const allCategoriesCompleted = categories.every(cat => completedCategories[cat] === true);
+    if (allCategoriesCompleted) {
+        moveToNextLevel(user);
+    }
+
+    // Save the user data to ensure persistence
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem(user.username, JSON.stringify(user));
+}
+
 // Start Level
 function startLevel(level) {
+    console.log(`Starting level: ${level}`);
     const currentUserStr = localStorage.getItem("currentUser");
     if (currentUserStr) {
         const currentUser = JSON.parse(currentUserStr);
@@ -74,16 +124,12 @@ function startLevel(level) {
             return;
         }
     }
-
     currentLevel = level;
     currentCategory = '';
     currentQuestionIndex = 0;
     score = 0;
     allAnswersCorrect = true;
-    userAnswers = []; // Reset answers for the new level
-
-    // Increment the attempt count for the level
-    incrementLevelAttempt(currentLevel);
+    userAnswers = [];
 
     document.getElementById('welcomeCard').classList.add('hidden');
     document.getElementById('categorySelection').classList.remove('hidden');
@@ -92,68 +138,52 @@ function startLevel(level) {
     updateCategoryStatus(JSON.parse(currentUserStr), level);
 }
 
-// Increment Level Attempt Count
-function incrementLevelAttempt(level) {
-    const currentUserStr = localStorage.getItem("currentUser");
-    if (currentUserStr) {
-        let currentUser = JSON.parse(currentUserStr);
-        if (!currentUser.levelAttempts) {
-            currentUser.levelAttempts = {};
-        }
-        if (!currentUser.levelAttempts[level]) {
-            currentUser.levelAttempts[level] = 0;
-        }
-        currentUser.levelAttempts[level] += 1;
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    }
-}
-
-// Update Category Status
+// Update Category Status - Ensure data in the UI matches localStorage
 function updateCategoryStatus(user, level) {
     const categories = ["Grammaire", "Vocabulaire", "Compréhension"];
+    const completedCategories = user.completedCategories[level] || {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+    };
+
     categories.forEach((category) => {
         const categoryElement = document.getElementById(`category${category}`);
         if (categoryElement) {
-            if (user.completedCategories && user.completedCategories[level] && user.completedCategories[level][category]) {
+            if (completedCategories[category]) {
+                // Set category as completed (✔️)
                 categoryElement.textContent = "✔️";
                 categoryElement.classList.remove("category-invalid");
                 categoryElement.classList.add("category-valid");
             } else {
+                // Set category as not completed (❌)
                 categoryElement.textContent = "❌";
                 categoryElement.classList.remove("category-valid");
                 categoryElement.classList.add("category-invalid");
             }
         } else {
-            console.warn(`Category element for ${category} not found.`);
+            console.error(`Category element for ${category} not found.`);
         }
     });
+
+    // Debug output to verify completed categories
+    console.log(`Updated category status for level ${level}:`, completedCategories);
 }
 
-// Choose Category
-function chooseCategory() {
-    document.getElementById('welcomeCard').classList.add('hidden');
-    document.getElementById('categorySelection').classList.remove('hidden');
-}
-
-// Select Category
+// Select Category and Start Quiz
 function selectCategory(category) {
     console.log(`Category selected: ${category}`);
     currentCategory = category;
     currentQuestionIndex = 0;
     score = 0;
     allAnswersCorrect = true;
-    userAnswers = []; // Reset user answers for this category
-
-    document.getElementById('categorySelection').classList.add('hidden');
-    document.getElementById('quizStart').classList.remove('hidden');
-    document.getElementById('selectedCategory').textContent = `${currentCategory} - Niveau ${currentLevel}`;
+    userAnswers = [];
 
     const currentUserStr = localStorage.getItem("currentUser");
     let currentUser;
 
     try {
         currentUser = JSON.parse(currentUserStr);
-        console.log("Current user data for selecting category: ", currentUser);
     } catch (e) {
         console.error("Error parsing currentUser JSON while selecting category:", e);
         alert("Error reading user data. Please log out and log in again.");
@@ -169,30 +199,28 @@ function selectCategory(category) {
                  (currentCategory.toLowerCase() === 'compréhension' && question.categ.toLowerCase() === 'comp')) &&
                 question.NV.toLowerCase() === currentLevel.toLowerCase()
         );
+
+        if (filteredQuestions.length > 0) {
+            document.getElementById('categorySelection').classList.add('hidden');
+            startQuiz();
+        } else {
+            alert("Aucune question disponible dans cette catégorie et niveau.");
+        }
     } else {
         console.error("User NV level not found.");
-    }
-
-    if (filteredQuestions.length === 0) {
-        alert("Aucune question disponible dans cette catégorie et niveau.");
-        navigate('dashboard');
     }
 }
 
 // Start Quiz
 function startQuiz() {
     document.getElementById('quizStart').classList.add('hidden');
-    if (filteredQuestions.length > 0) {
-        showQuestion();
-    } else {
-        console.error("No questions available to start quiz.");
-    }
+    document.getElementById('quizQuestion').classList.remove('hidden');
+    showQuestion();
 }
 
 // Show Quiz Question with Timer
 function showQuestion() {
     if (currentQuestionIndex < filteredQuestions.length) {
-        document.getElementById('quizQuestion').classList.remove('hidden');
         const currentQuestion = filteredQuestions[currentQuestionIndex];
         document.getElementById('questionText').textContent = currentQuestion.question;
         document.getElementById('questionCount').textContent = `Question ${currentQuestionIndex + 1} sur ${filteredQuestions.length}`;
@@ -212,29 +240,8 @@ function showQuestion() {
 
         startTimer(60);
     } else {
-        finishCategory();
+        finishCategory(JSON.parse(localStorage.getItem("currentUser")));
     }
-}
-
-// Timer Logic
-function startTimer(duration) {
-    clearInterval(timer);
-    timeLeft = duration;
-    document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
-
-    timer = setInterval(() => {
-        timeLeft -= 1;
-        document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            alert("Temps écoulé!");
-            allAnswersCorrect = false;
-            userAnswers.push({ question: filteredQuestions[currentQuestionIndex].question, correct: false, answer: "Temps écoulé" });
-            currentQuestionIndex++;
-            showQuestion();
-        }
-    }, 1000);
 }
 
 // Handle Answer Selection
@@ -262,7 +269,7 @@ function selectAnswer(question, selectedAnswer) {
     }
 }
 
-// Finish Quiz Category
+// Finish Quiz Category - Updated to ensure localStorage sync and UI update
 function finishCategory(user) {
     document.getElementById('quizQuestion').classList.add('hidden');
 
@@ -273,14 +280,13 @@ function finishCategory(user) {
         user.completedCategories[currentLevel] = { "Grammaire": false, "Vocabulaire": false, "Compréhension": false };
     }
 
-    // Only mark the category as completed if the user scored 10/10
-    if (score === 10) {
+    if (score === filteredQuestions.length * 10) {
         user.completedCategories[currentLevel][currentCategory] = true;
+        alert(`Félicitations! Vous avez complété la catégorie: ${currentCategory} avec succès!`);
     } else {
-        alert(`Score insuffisant (${score}/10). Vous devez obtenir un score de 10/10 pour valider la catégorie.`);
+        alert(`Score insuffisant (${score}/${filteredQuestions.length * 10}). Vous devez obtenir un score de 10/10 pour valider la catégorie.`);
     }
-    
-    // Save Quiz Report Data
+
     if (!user.reports) {
         user.reports = {};
     }
@@ -294,39 +300,43 @@ function finishCategory(user) {
         attempts: user.levelAttempts ? user.levelAttempts[currentLevel] : 1
     };
 
+    // Save user progress to ensure it persists
     localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem(user.username, JSON.stringify(user));
 
-    updateCategoryStatus(user, currentLevel);
-    checkAllCategoriesCompleted(user);
+    // Re-fetch the user data to ensure synchronization
+    const updatedUser = JSON.parse(localStorage.getItem("currentUser")); // Re-fetch to ensure sync
+    console.log('Re-fetched updated user after finishing category:', updatedUser);
+
+    // Update the UI to reflect changes
+    updateCategoryStatus(updatedUser, currentLevel);
+    updateNVButtons(updatedUser);
+    checkAllCategoriesCompleted(updatedUser);
 }
 
-// Check if All Categories are Completed and Unlock Next Level
-function checkAllCategoriesCompleted(user) {
-    if (user.completedCategories[currentLevel] && Object.values(user.completedCategories[currentLevel]).every(val => val) && user.NV !== "C2") {
-        moveToNextLevel(user);
-    }
-}
+// Start Timer
+function startTimer(duration) {
+    timeLeft = duration;
+    document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = `Temps restant: ${timeLeft} secondes`;
 
-// Move to Next Level
-function moveToNextLevel(user) {
-    const NVs = ["A1", "A2", "B1", "B2", "C1", "C2"];
-    const currentIndex = NVs.indexOf(user.NV);
-    if (currentIndex < NVs.length - 1) {
-        user.NV = NVs[currentIndex + 1];
-        if (!user.completedCategories[user.NV]) {
-            user.completedCategories[user.NV] = { "Grammaire": false, "Vocabulaire": false, "Compréhension": false };
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Temps écoulé!");
+            selectAnswer(filteredQuestions[currentQuestionIndex], "");
         }
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        alert(`Félicitations! Vous avez débloqué le niveau ${user.NV}`);
-        updateNVButtons(user);
-        startLevel(user.NV);
-    } else {
-        alert("Vous avez terminé tous les niveaux disponibles !");
-    }
+    }, 1000);
 }
 
-// Logout User
+// Log Out User
 function logoutUser() {
+    const currentUserStr = localStorage.getItem("currentUser");
+    if (currentUserStr) {
+        const currentUser = JSON.parse(currentUserStr);
+        localStorage.removeItem(currentUser.username);
+    }
     localStorage.removeItem("currentUser");
     window.location.href = 'first.html';
 }
