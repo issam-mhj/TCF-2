@@ -13,7 +13,6 @@ function showSignUp() {
   document.getElementById('signUP').classList.remove('hidden');
 }
 
-
 function backToMain() {
   document.getElementById('signIN').classList.add('hidden');
   document.getElementById('signUP').classList.add('hidden');
@@ -25,76 +24,112 @@ function generateRandomId() {
   return '' + Date.now();
 }
 
-  // Sign up user and save to local storage
-  function signUpUser() {
-    const username = document.getElementById('signupUsername').value;
-    if (!username) {
-      alert("Please enter a username");
-      return;
-    }
+// Add these helper functions at the top of your file
+function saveUsers(usersArray) {
+  localStorage.setItem("users", JSON.stringify(usersArray));
+}
+
+function getCurrentUser() {
+  return JSON.parse(localStorage.getItem("currentUser"));
+}
+
+function updateUser(updatedUser) {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const index = users.findIndex(u => u.username === updatedUser.username);
+  if (index !== -1) {
+    users[index] = updatedUser;
+    saveUsers(users);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
   }
+}
 
 // Sign up user and save to local storage
-function signUpUser () {
-  const username = document.getElementById('signupUsername').value;
+function signUpUser() {
+  const username = document.getElementById('signupUsername').value.trim();
   if (!username) {
-      alert("Please enter a username");
-      return;
+    alert("Please enter a username");
+    return;
   }
 
   // Check if user already exists
-  if (localStorage.getItem(username)) {
-      alert("Username already exists. Please choose a different one.");
-      return;
+  if (users.some(user => user.username === username)) {
+    alert("Username already exists. Please choose a different one.");
+    return;
   }
 
-  // Store user in local storage with initial data
-  const user = {
-      username: username,
-      NV: "A1", // Default level for new users
-      score: 0,
-      completedCategories: {
-          "Grammaire": false,
-          "Vocabulaire": false,
-          "Compréhension": false
+  // Create new user object with complete structure
+  const newUser = {
+    userNum: users.length + 1,
+    username: username,
+    NV: "A1",
+    completedCategories: {
+      "A1": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+      },
+      "A2": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+      },
+      "B1": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+      },
+      "B2": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+      },
+      "C1": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
+      },
+      "C2": {
+        "Grammaire": false,
+        "Vocabulaire": false,
+        "Compréhension": false
       }
+    },
+    scores: [],
+    quizAttempts: [],
+    statistics: {
+      scoreInLevel: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 },
+      attemptsByLevel: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }
+    }
   };
 
-  // Store user data as a JSON string
-  localStorage.setItem(username, JSON.stringify(user));
-  // Set current user for session
-  localStorage.setItem("currentUser ", JSON.stringify(user));
+  // Add user to users array and save
+  users.push(newUser);
+  saveUsers(users);
+  localStorage.setItem("currentUser", JSON.stringify(newUser));
 
-  // Create a user object and add it to the users array
-  const userObject = { username: username };
-  if (!users.some(u => u.username === username)) {
-      users.push(userObject); // Add the user object to the array
-      localStorage.setItem("users", JSON.stringify(users)); // Save the array as a string in local storage
-  }
-
-  alert("Sign up successful! You can now log in.");
-  document.getElementById('signupUsername').value = '';
-  window.location.href = 'user.html'; // Redirect directly after sign up
+  alert("Sign up successful! Welcome to the quiz.");
+  window.location.href = 'user.html';
 }
+
 // Login user by checking local storage
 function loginUser() {
-  const username = document.getElementById('loginUsername').value;
+  const username = document.getElementById('loginUsername').value.trim();
   if (!username) {
-      alert("Please enter your username");
-      return;
+    alert("Please enter your username");
+    return;
   }
 
-  // Check if user exists in local storage
-  const userStr = localStorage.getItem(username);
-  if (userStr) {
-      alert("Login successful! Welcome, " + username);
+  // Find user in the array
+  const user = users.find(user => user.username === username);
+  if (user) {
+    alert("Login successful! Welcome, " + username);
 
-      // Parse user data and store as "currentUser" for the session
-      localStorage.setItem("currentUser", userStr);
+    // Save current user in localStorage
+    localStorage.setItem("currentUser", JSON.stringify(user));
 
-      // Redirect to user.html
-      window.location.href = 'user.html';
+    // Redirect to user.html
+    window.location.href = 'user.html';
   } else {
-      alert("Username not found. Please sign up first.");
+    alert("Username not found. Please sign up first.");
   }
 }
