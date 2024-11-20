@@ -309,14 +309,20 @@ function finishCategory(user) {
     };
   }
 
-  // Only mark the category as completed if the user scored 10/10
-  if (score === 10) {
-    user.completedCategories[currentLevel][currentCategory] = true;
-  } else {
-    alert(
-      `Score insuffisant (${score}/10). Vous devez obtenir un score de 10/10 pour valider la catégorie.`
-    );
-  }
+  
+
+  if (score === filteredQuestions.length) {
+  user.completedCategories[currentLevel][currentCategory] = true;
+  let len = user.userNum;
+  const usersStr = localStorage.getItem("users");
+  let userr = JSON.parse(usersStr);
+  userr[len-1].completedCategories[currentLevel][currentCategory] = true     
+  localStorage.setItem("users", JSON.stringify(userr));
+} else {
+  alert(
+    `Score insuffisant (${score}/${filteredQuestions.length}). Vous devez obtenir un score de ${filteredQuestions.length}/${filteredQuestions.length} pour valider la catégorie.`
+  );
+}
 
   // Save Quiz Report Data
   if (!user.reports) {
