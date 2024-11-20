@@ -100,8 +100,26 @@ function startLevel(level) {
 }
 
 // Increment Level Attempt Count
+// function incrementLevelAttempt(level) {
+//   const currentUserStr = localStorage.getItem("currentUser");     
+//   if (currentUserStr) {
+//     let currentUser = JSON.parse(currentUserStr);
+//     if (!currentUser.levelAttempts) {
+//       currentUser.levelAttempts = {};
+//     }
+//     if (!currentUser.levelAttempts[level]) {
+//       currentUser.levelAttempts[level] = 0;
+//     }
+//     currentUser.levelAttempts[level] += 1;
+//     localStorage.setItem("currentUser", JSON.stringify(currentUser));
+//   }
+// }
+
 function incrementLevelAttempt(level) {
-  const currentUserStr = localStorage.getItem("currentUser");
+  const currentUserStr = localStorage.getItem("currentUser");  
+  let len = currentUserStr.userNum;
+  const usersStr = localStorage.getItem("users");
+  let userr = JSON.parse(usersStr);
   if (currentUserStr) {
     let currentUser = JSON.parse(currentUserStr);
     if (!currentUser.levelAttempts) {
@@ -109,8 +127,11 @@ function incrementLevelAttempt(level) {
     }
     if (!currentUser.levelAttempts[level]) {
       currentUser.levelAttempts[level] = 0;
+      userr[len-1].attemptsByLevel[level] += 0;
     }
     currentUser.levelAttempts[level] += 1;
+    userr[len-1].attemptsByLevel[level] += 1;     
+    localStorage.setItem("users", JSON.stringify(userr));
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
   }
 }
@@ -338,6 +359,16 @@ function finishCategory(user) {
     attempts: user.levelAttempts ? user.levelAttempts[currentLevel] : 1,
   };
 
+  let len = user.userNum;
+  const usersStr = localStorage.getItem("users");
+  let userr = JSON.parse(usersStr);
+  userr[len-1].reports[currentLevel][currentCategory] = {
+    questions: userAnswers,
+    score: score,
+    level: currentLevel,
+    attempts: user.levelAttempts ? user.levelAttempts[currentLevel] : 1,
+  }     
+  localStorage.setItem("users", JSON.stringify(userr));
   localStorage.setItem("currentUser", JSON.stringify(user));
 
   updateCategoryStatus(user, currentLevel);
@@ -396,7 +427,6 @@ if (currentUserObj) {
   localStorage.setItem(user, JSON.stringify(userData));
   console.log(userData.NV);
 }
-
 // Logout User
 function logoutUser() {
   let currentUser = localStorage.getItem("currentUser");
