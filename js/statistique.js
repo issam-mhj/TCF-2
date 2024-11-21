@@ -104,4 +104,3 @@ C1.innerText=tentatives[4];
 C2.innerText=tentatives[5];
 
 
-
