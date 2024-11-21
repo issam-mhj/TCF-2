@@ -99,27 +99,9 @@ function startLevel(level) {
   updateCategoryStatus(JSON.parse(currentUserStr), level);
 }
 
-// Increment Level Attempt Count
-// function incrementLevelAttempt(level) {
-//   const currentUserStr = localStorage.getItem("currentUser");     
-//   if (currentUserStr) {
-//     let currentUser = JSON.parse(currentUserStr);
-//     if (!currentUser.levelAttempts) {
-//       currentUser.levelAttempts = {};
-//     }
-//     if (!currentUser.levelAttempts[level]) {
-//       currentUser.levelAttempts[level] = 0;
-//     }
-//     currentUser.levelAttempts[level] += 1;
-//     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-//   }
-// }
-
+//Increment Level Attempt Count
 function incrementLevelAttempt(level) {
-  const currentUserStr = localStorage.getItem("currentUser");  
-  let len = currentUserStr.userNum;
-  const usersStr = localStorage.getItem("users");
-  let userr = JSON.parse(usersStr);
+  const currentUserStr = localStorage.getItem("currentUser");     
   if (currentUserStr) {
     let currentUser = JSON.parse(currentUserStr);
     if (!currentUser.levelAttempts) {
@@ -127,14 +109,35 @@ function incrementLevelAttempt(level) {
     }
     if (!currentUser.levelAttempts[level]) {
       currentUser.levelAttempts[level] = 0;
-      userr[len-1].attemptsByLevel[level] += 0;
     }
     currentUser.levelAttempts[level] += 1;
-    userr[len-1].attemptsByLevel[level] += 1;     
-    localStorage.setItem("users", JSON.stringify(userr));
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
   }
 }
+
+// console.log(userr[6].attemptsByLevel[] += 1)  //here
+
+
+// function incrementLevelAttempt(level) {
+//   const currentUserStr = localStorage.getItem("currentUser");  
+//   let len = currentUserStr.userNum;
+//   const usersStr = localStorage.getItem("users");
+//   let userr = JSON.parse(usersStr);
+//   if (currentUserStr) {
+//     let currentUser = JSON.parse(currentUserStr);
+//     if (!currentUser.levelAttempts) {
+//       currentUser.levelAttempts = {};
+//     }
+//     if (!currentUser.levelAttempts[level]) {
+//       currentUser.levelAttempts[level] = 0;
+//       userr[len-1].attemptsByLevel[level] += 0; 
+//     }
+//     currentUser.levelAttempts[level] += 1;
+//     userr[len-1].attemptsByLevel[level] += 1;     
+//     localStorage.setItem("users", JSON.stringify(userr));
+//     localStorage.setItem("currentUser", JSON.stringify(currentUser));
+//   }
+// }
 
 // Update Category Status
 function updateCategoryStatus(user, level) {
