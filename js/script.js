@@ -183,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
         element.classList.remove('incorrect');
     }
 
+    console.log("hey")
+
     function showResults() {
         questionContainer.classList.add('hidden');
         resultContainer.classList.remove('hidden');
