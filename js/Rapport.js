@@ -1,14 +1,19 @@
-function genererPdf(){
-    const {jsPDF} =window.jspdf;
-    const docpdf=new jsPDF();
+function generatePDFReport() {
+    const { jsPDF } = window.jspdf; 
+    const docpdf = new jsPDF();
     docpdf.setFontSize(20);
-    docpdf.text('Bonjour je ma appele ikram',20,30);
-    docpdf.setFontSize(12);
-    docpdf.text('mon nom est Elbenallali',20,40);
-    docpdf.text('mon prenom est Ikram',20,50);
-    docpdf.text('mon age est 21 ans ',20,60);
-    docpdf.text('je etudier a YOUCODE',20,70);
-    docpdf.text('je ai une licence en physique ',20,80);
-    docpdf.text('je suis de Nador',20,90);
-docpdf.save('genererPdf.pdf');
+    const users = localStorage.getItem('users');
+    if (users) {
+        docpdf.text('Liste des utilisateurs :', 10, 20); 
+        docpdf.text(users, 10, 30); 
+        docpdf.text(`- Questions posées : ${users.questionsAsked}`, 15, 40);
+        docpdf.text(`✅ Réponses correctes : ${users.correctAnswers}`, 15, 50);
+        docpdf.text(`❌ Réponses incorrectes : ${users.wrongAnswers}`, 15, 60);
+        docpdf.text(`🏆 Score total : ${users.totalScore}`, 15,70);
+        docpdf.text(`🌟 Niveau atteint : ${users.level}`, 15, 80);
+
+    } else {
+        docpdf.text('Aucun utilisateur trouvé.', 10, 20);
+    }
+    docpdf.save('generatePDFReport.pdf');
 }

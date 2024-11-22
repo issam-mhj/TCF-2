@@ -115,31 +115,6 @@ function incrementLevelAttempt(level) {
   }
 }
 
-// console.log(userr[6].attemptsByLevel[] += 1)  //here
-
-
-// function incrementLevelAttempt(level) {
-//   const currentUserStr = localStorage.getItem("currentUser");  
-//   let len = currentUserStr.userNum;
-//   const usersStr = localStorage.getItem("users");
-//   let userr = JSON.parse(usersStr);
-//   if (currentUserStr) {
-//     let currentUser = JSON.parse(currentUserStr);
-//     if (!currentUser.levelAttempts) {
-//       currentUser.levelAttempts = {};
-//     }
-//     if (!currentUser.levelAttempts[level]) {
-//       currentUser.levelAttempts[level] = 0;
-//       userr[len-1].attemptsByLevel[level] += 0; 
-//     }
-//     currentUser.levelAttempts[level] += 1;
-//     userr[len-1].attemptsByLevel[level] += 1;     
-//     localStorage.setItem("users", JSON.stringify(userr));
-//     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-//   }
-// }
-
-// Update Category Status
 function updateCategoryStatus(user, level) {
   const categories = ["Grammaire", "Vocabulaire", "Compréhension"];
   categories.forEach((category) => {
@@ -163,6 +138,45 @@ function updateCategoryStatus(user, level) {
     }
   });
 }
+
+// Update Category Status
+function incrementLevelAttempt(level) {
+  const currentUserStr = localStorage.getItem("currentUser");
+  const usersStr = localStorage.getItem("users");
+
+  if (currentUserStr && usersStr) {
+    let currentUser = JSON.parse(currentUserStr); // Parse current user
+    let users = JSON.parse(usersStr); // Parse all users
+    let userIndex = currentUser.userNum - 1; // Assuming userNum is 1-based
+
+    // Initialize `levelAttempts` if not present
+    if (!currentUser.levelAttempts) {
+      currentUser.levelAttempts = {};
+    }
+    if (!currentUser.levelAttempts[level]) {
+      currentUser.levelAttempts[level] = 0;
+    }
+
+    // Increment attempts for current user
+    currentUser.levelAttempts[level] += 1;
+
+    // Update corresponding user in the `users` array
+    if (users[userIndex]) {
+      if (!users[userIndex].attemptsByLevel) {
+        users[userIndex].attemptsByLevel = {};
+      }
+      if (!users[userIndex].attemptsByLevel[level]) {
+        users[userIndex].attemptsByLevel[level] = 0;
+      }
+      users[userIndex].attemptsByLevel[level] += 1;
+    }
+
+    // Save updated data back to localStorage
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+}
+
 
 // Choose Category
 function chooseCategory() {
@@ -304,6 +318,7 @@ function selectAnswer(question, selectedAnswer) {
     correctAnswer: question.correctOption,
   });
 
+
   if (isCorrect) {
     score += 1;
   } else {
@@ -321,7 +336,7 @@ function selectAnswer(question, selectedAnswer) {
 // Finish Quiz Category
 function finishCategory(user) {
   document.getElementById("quizQuestion").classList.add("hidden");
-
+  // document.getElementById("quizResults").classList.remove("hidden"); //here
   if (!user.completedCategories) {
     user.completedCategories = {};
   }
@@ -365,6 +380,9 @@ function finishCategory(user) {
   let len = user.userNum;
   const usersStr = localStorage.getItem("users");
   let userr = JSON.parse(usersStr);
+  console.log(userr[len-1].scoreInLevel[currentLevel])  
+  userr[len-1].scoreInLevel[currentLevel] += score;
+  console.log(userr[len-1].scoreInLevel[currentLevel])
   userr[len-1].reports[currentLevel][currentCategory] = {
     questions: userAnswers,
     score: score,
