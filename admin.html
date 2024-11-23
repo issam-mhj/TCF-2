@@ -33,7 +33,7 @@
   <!-- Main Content Section -->
   <section id="mainContent" class="flex-grow p-10">
     <!-- Manage Questions Section -->
-    <div id="manageQuestions" class="hidden w-full max-w-3xl mx-auto p-10 bg-white rounded-2xl shadow-lg">
+    <div id="manageQuestions" class="w-full max-w-3xl mx-auto p-10 bg-white rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold mb-6">🛠 Gestion des Questions de Quiz</h2>
       <button onclick="displayAddQuestionForm()" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 mb-4">Ajouter Question</button>
 
@@ -81,7 +81,7 @@
         <thead>
           <tr class="bg-gray-200">
             <th class="p-2 border">Nom Utilisateur</th>
-            <th class="p-2 border">Niveau</th>
+            <th class="p-2 border cursor-pointer hover:bg-gray-300" onclick="searchByLVL()" >Niveau</th>
             <th class="p-2 border">Score</th>
             <th class="p-2 border">Date de Test</th>
           </tr>
@@ -93,9 +93,20 @@
 
     <!-- General Stats Section -->
     <div id="generalStats" class="hidden w-full max-w-3xl mx-auto p-10 bg-white rounded-2xl shadow-lg">
-      <h2 class="text-2xl font-bold mb-6">📈 Statistiques Générales et Tableau de Bord</h2>
-      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite Global : <strong id="successRate"><span id="x">0</span>%</strong></p>
-      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives par Niveau : <span id="attemptsByLevel"></span></p>
+      <h2 class="text-2xl font-bold mb-6">📈 Statistiques Générales</h2>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite A1 : <strong id="successRate1"><span >0</span>%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite A2 : <strong id="successRate2"><span >0</span>%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite B1 : <strong id="successRate3"><span >0</span>%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite B2 : <strong id="successRate4"><span >0</span>%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite C1 : <strong id="successRate5"><span >0</span>%</strong></p>
+      <p id="globalSuccessRate" class="text-gray-700">Taux de Réussite C2 : <strong id="successRate6"><span >0</span>%</strong></p>
+      <hr class="my-[10px] w-full">
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau A1: <strong id="successRate1"><span id="attemptsByLevel1">0</span></strong></p>
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau A2: <strong id="successRate2"><span id="attemptsByLevel2">0</span></strong></p>
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau B1: <strong id="successRate3"><span id="attemptsByLevel3">0</span></strong></p>
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau B2: <strong id="successRate4"><span id="attemptsByLevel3">0</span></strong></p>
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau C1: <strong id="successRate5"><span id="attemptsByLevel3">0</span></strong></p>
+      <p id="attemptsPerLevel" class="text-gray-700 mt-4">Tentatives Niveau C2: <strong id="successRate6"><span id="attemptsByLevel3">0</span></strong></p>
     </div>
 
     <!-- Generate Reports Section -->
@@ -109,6 +120,11 @@
 
   <!-- JavaScript -->
   <script src="js/tests.js" >
+  </script>
+  <script src="js/Rapport.js">
+  </script>
+  <script src="js/statistique.js">
+
   </script>
 </body>
 </html>
