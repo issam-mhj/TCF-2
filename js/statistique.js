@@ -18,10 +18,11 @@ let C2=document.getElementById("attemptsByLevel6");
 
 const attempts=JSON.parse(localStorage.getItem("users"));
 function Tentative(){
-    for(let i=0;i<6;i++){
-      attempts.forEach((element)=>{
-        tentatives[i] += element.attemptsByLevel[`A${i+1}`];
-    })
+for(let i=0;i<6;i++){
+  attempts.forEach((element)=>{
+    const attemptsByLevel = element.attemptsByLevel[`A${i+1}`];
+    tentatives[i] += attemptsByLevel || 0;
+  })
 }
 }
 Tentative();
@@ -29,18 +30,31 @@ console.log(tentatives);
 function TotalReussite() {
   for (let i = 0; i < 6; i++) {
     attempts.forEach((element) => {
-        if(element.fini===true){
-            totalReussits[i]++;
-        return;
-          }
-      if (element.NV > i) {
+      let det =0;
+      if(element.NV === "A1"){
+        det= 0;
+      }else if (element.NV === "A2"){
+        det= 1;
+        }else if (element.NV === "A3"){
+          det= 2;
+          }else if (element.NV === "A4"){
+            det= 3;
+            }else if (element.NV === "A5"){
+              det= 4;
+              }else if (element.NV === "A6"){
+                det= 5;
+                }
+      if(element.fini===true){
+          totalReussits[i]++;
+           return;
+        }
+      if (det > i) {
         totalReussits[i]++;
       }
 
     });
   }
 }
-console.log(totalReussits[5])
 function tauxReussite() {
   for (let i = 0; i < 6; i++) {
     tauxReussit[i] = (totalReussits[i] * 100) /attempts.length;
@@ -48,17 +62,19 @@ function tauxReussite() {
 }
 TotalReussite() ;
 tauxReussite();
+
 console.log(totalReussits);
 console.log(tauxReussit);
-// a1.innerText=tauxReussit[0];
-// a2.innerText=tauxReussit[1];
-// b1.innerText=tauxReussit[2];
-// b2.innerText=tauxReussit[3];
-// c1.innerText=tauxReussit[4];
-// c2.innerText=tauxReussit[5];
+a1.innerText=tauxReussit[0]+" %";
+a2.innerText=tauxReussit[1]+" %";
+b1.innerText=tauxReussit[2]+" %";
+b2.innerText=tauxReussit[3]+" %";
+c1.innerText=tauxReussit[4]+" %";
+c2.innerText=tauxReussit[5]+" %";
 A1.innerText=tentatives[0];
 A2.innerText=tentatives[1];
 B1.innerText=tentatives[2];
 B2.innerText=tentatives[3];
 C1.innerText=tentatives[4];
 C2.innerText=tentatives[5];
+console.log(B1.innerText);
