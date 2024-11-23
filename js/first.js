@@ -1,6 +1,5 @@
 let users = JSON.parse(localStorage.getItem("users")) || [];
 
-// Show and hide sections
 function showLogin() {
   document.getElementById('logOrSign').classList.add('hidden');
   document.getElementById('signUP').classList.add('hidden');
@@ -19,12 +18,10 @@ function backToMain() {
   document.getElementById('logOrSign').classList.remove('hidden');
 }
 
-// Generate unique ID
 function generateRandomId() {
   return '' + Date.now();
 }
 
-// Add these helper functions at the top of your file
 function saveUsers(usersArray) {
   localStorage.setItem("users", JSON.stringify(usersArray));
 }
@@ -43,7 +40,6 @@ function updateUser(updatedUser) {
   }
 }
 
-// Sign up user and save to local storage
 function signUpUser() {
   const username = document.getElementById('signupUsername').value.trim();
   if (!username) {
@@ -51,13 +47,11 @@ function signUpUser() {
     return;
   }
 
-  // Check if user already exists
   if (users.some(user => user.username === username)) {
     alert("Username already exists. Please choose a different one.");
     return;
   }
 
-  // Create new user object with complete structure
   const newUser = {
     userNum: users.length + 1,
     username: username,
@@ -111,7 +105,6 @@ function signUpUser() {
     attemptsByLevel: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }
   };
 
-  // Add user to users array and save
   users.push(newUser);
   saveUsers(users);
   localStorage.setItem("currentUser", JSON.stringify(newUser));
@@ -120,7 +113,6 @@ function signUpUser() {
   window.location.href = 'user.html';
 }
 
-// Login user by checking local storage
 function loginUser() {
   const username = document.getElementById('loginUsername').value.trim();
   if (!username) {
@@ -128,17 +120,18 @@ function loginUser() {
     return;
   }
 
-  // Find user in the array
   const user = users.find(user => user.username === username);
   if (user) {
     alert("Login successful! Welcome, " + username);
 
-    // Save current user in localStorage
     localStorage.setItem("currentUser", JSON.stringify(user));
 
-    // Redirect to user.html
     window.location.href = 'user.html';
   } else {
     alert("Username not found. Please sign up first.");
   }
+}
+
+function goAdminPage(){
+  window.location.href = 'loginadmin.html';
 }

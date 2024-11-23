@@ -1883,7 +1883,7 @@ if (questionText && level && category && correctAnswer) {
     }; 
     questions.push(question);
 
-    let index = localStorage.length / 8; 
+    let index = localStorage.length /8; 
     let ques = question.question; 
     let categ = question.categ; 
     let nv = question.NV; 
@@ -2083,10 +2083,10 @@ function searchUser() {
             <tr class="hover:bg-gray-100 transition-colors duration-200"> 
                 <td class="font-semibold my-[4px]">${user.username}</td> 
                 <td class="text-left flex items-center my-[4px]">
-                    <span class=" text-blue-500">${user.username|| "A1"}</span> 
+                    <span class=" text-blue-500">${user.NV|| "A1"}</span> 
                 </td>  
                 <td class="my-[4px]">
-                    <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.score || 0}</span> 
+                    <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.scoreInLevel.A1 + user.scoreInLevel.A2 + user.scoreInLevel.B1 + user.scoreInLevel.B2 + user.scoreInLevel.C1 + user.scoreInLevel.C2 || 0}</span> 
                 </td>
                 <td class="text-left flex items-center my-[4px]">
                     <span class=" text-blue-500">${user.time|| undefined}</span> 
@@ -2098,4 +2098,33 @@ function searchUser() {
         alert("User not found.");
         scoreTable.innerHTML = '';
     }
-     }
+    }
+
+    function searchByLVL() {
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const levels = ["C2", "C1", "B2", "B1", "A2", "A1"];
+        let tableContent = "";
+        const scoreTable = document.getElementById("userScoresList");
+    
+        levels.forEach(level => {
+            const usersAtLevel = users.filter(user => user.NV === level); 
+            usersAtLevel.forEach(user => {
+                tableContent += `
+                    <tr class="hover:bg-gray-100 transition-colors duration-200">
+                        <td class="font-semibold my-[4px]">${user.username}</td>
+                        <td class="text-left flex items-center my-[4px]">
+                            <span class="text-blue-500">${user.NV || "A1"}</span>
+                        </td>
+                        <td class="my-[4px]">
+                            <span class="bg-green-200 text-green-800 font-bold py-1 px-3 rounded-full">${user.scoreInLevel.A1 + user.scoreInLevel.A2 + user.scoreInLevel.B1 + user.scoreInLevel.B2 + user.scoreInLevel.C1 + user.scoreInLevel.C2 || 0}</span>
+                        </td>
+                        <td class="text-left flex items-center my-[4px]">
+                            <span class="text-blue-500">${user.time || undefined}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+    
+        scoreTable.innerHTML = tableContent;
+    }    
