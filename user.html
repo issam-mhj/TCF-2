@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - Quiz Management</title>
+  <meta name="title" content="French Quiz TCF - Test Your French Language Skills">
+  <meta name="description" content="Interactive French language quiz platform for TCF exam preparation. Practice grammar, vocabulary, and comprehension with levels from A1 to C2.">
+  <meta name="keywords" content="French quiz, TCF exam, French language test, French grammar, French vocabulary, language learning, French comprehension, A1, A2, B1, B2, C1, C2">
+  <meta name="authors" content="Ikram El Benallali, Issam Mahtaj, Omar Zariah">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="French">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="js/tests.js" defer></script> <!-- Ensure questions are loaded -->
-  <script src="js/user.js" defer></script>
+  <script src="js/tests.js"></script>
+  <script src="js/user.js"></script>
 
   <style>
     .gradient-bg {
@@ -15,25 +21,70 @@
     }
 
     .sidebar {
-      min-height: 100vh;
-      width: 16rem;
       background: #0A1931;
       color: white;
       padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+        z-index: 50;
+        transition: transform 0.3s ease-in-out;
+        width: 80%;
+        max-width: 20rem;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+      }
+    }
+
+    /* Desktop sidebar */
+    @media (min-width: 769px) {
+      .sidebar {
+        min-height: 100vh;
+        width: 16rem;
+      }
+
+      #menuToggle {
+        display: none;
+      }
     }
 
     .level-button {
-      width: 3rem;
-      height: 3rem;
+      width: 2.5rem;
+      height: 2.5rem;
       border-radius: 50%;
       font-weight: bold;
       text-align: center;
-      line-height: 3rem;
+      line-height: 2.5rem;
       cursor: pointer;
       transition: background-color 0.3s;
+    }
+
+    @media (min-width: 640px) {
+      .level-button {
+        width: 3rem;
+        height: 3rem;
+        line-height: 3rem;
+      }
     }
 
     .level-locked {
@@ -82,14 +133,17 @@
     }
   </style>
 </head>
-<body class="gradient-bg flex" onload="initializeUserDashboard()">
+<body class="gradient-bg flex flex-col md:flex-row">
+  <button id="menuToggle" class="fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-lg md:hidden">
+    ☰
+  </button>
 
-  <!-- Sidebar Section -->
-  <aside class="sidebar">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <aside id="sidebar" class="sidebar">
     <div>
       <h2 class="text-xl font-bold mb-6" id="username">Utilisateur: Invité</h2>
 
-      <!-- Niveau Section -->
       <div class="mb-8">
         <h3 class="text-lg font-semibold mb-4">Niveau</h3>
         <div class="grid grid-cols-2 gap-4">
@@ -102,7 +156,6 @@
         </div>
       </div>
 
-      <!-- Catégorie Section -->
       <div class="mb-8">
         <h3 class="text-lg font-semibold mb-4">Catégorie</h3>
         <div class="category-label">
@@ -120,51 +173,68 @@
       </div>
     </div>
 
-    <!-- Log Out Button -->
     <button onclick="logoutUser()" class="logout-button mt-10">Se Déconnecter</button>
   </aside>
 
-  <!-- Main Content Section -->
-  <section id="mainContent" class="flex-grow p-10">
-    <!-- Welcome Card -->
-    <div id="welcomeCard" class="w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
+  <section id="mainContent" class="flex-grow p-4 md:p-10">
+    <div id="welcomeCard" class="w-full max-w-md mx-auto p-6 md:p-10 bg-white rounded-2xl shadow-lg text-center">
       <h2 class="text-3xl font-bold mb-6">Bienvenue sur le Quiz TCF</h2>
       <p class="mb-6">Choisissez une catégorie pour commencer le quiz !</p>
       <button onclick="chooseCategory()" class="bg-green-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-green-600 transition">Choisir une Catégorie</button>
     </div>
 
-    <!-- Category Selection -->
-    <div id="categorySelection" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
-      <h2 class="text-3xl font-bold mb-6">📝 Sélection de la Catégorie de Quiz</h2>
-      <div class="space-y-4">
-        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📜 Grammaire</button>
-        <button onclick="selectCategory('Vocabulaire')" class="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">📚 Vocabulaire</button>
-        <button onclick="selectCategory('Compréhension')" class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition">🔍 Compréhension</button>
+    <div id="categorySelection" class="hidden w-full max-w-md mx-auto p-6 md:p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h2 class="text-2xl md:text-3xl font-bold mb-6">📝 Sélection de la Catégorie de Quiz</h2>
+      <div class="space-y-3 md:space-y-4">
+        <button onclick="selectCategory('Grammaire')" class="w-full bg-blue-500 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-blue-600 transition">📜 Grammaire</button>
+        <button onclick="selectCategory('Vocabulaire')" class="w-full bg-purple-500 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-purple-600 transition">📚 Vocabulaire</button>
+        <button onclick="selectCategory('Compréhension')" class="w-full bg-yellow-500 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-yellow-600 transition">🔍 Compréhension</button>
       </div>
     </div>
 
-    <!-- Quiz Start Section -->
     <div id="quizStart" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h2 class="text-3xl font-bold mb-6">📋 Commencer le Quiz</h2>
       <p class="mb-4">Vous avez sélectionné la catégorie: <span id="selectedCategory"></span></p>
       <button onclick="startQuiz()" class="bg-green-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-green-600 transition">Commencer</button>
     </div>
 
-    <!-- Quiz Question -->
-    <div id="quizQuestion" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
-      <h1 class="text-3xl font-bold mb-4">Question de Quiz</h1>
+    <div id="quizQuestion" class="hidden w-full max-w-md mx-auto p-6 md:p-10 bg-white rounded-2xl shadow-lg text-center">
+      <h1 class="text-2xl md:text-3xl font-bold mb-4">Question de Quiz</h1>
       <p id="questionCount" class="text-sm mb-4">Question 1 of 10</p>
-      <p id="questionText" class="text-xl font-medium mb-4"></p>
-      <div id="timer">Temps restant: 60 secondes</div>
-      <div id="answers" class="grid grid-cols-2 gap-4"></div>
+      <p id="questionText" class="text-lg md:text-xl font-medium mb-4"></p>
+      <div id="timer" class="mb-4">Temps restant: 60 secondes</div>
+      <div id="answers" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"></div>
     </div>
 
-    <!-- Quiz Results (Placeholder) -->
     <div id="quizResults" class="hidden w-full max-w-md mx-auto p-10 bg-white rounded-2xl shadow-lg text-center">
       <h2 class="text-3xl font-bold mb-6">🏆 Résultats du Quiz</h2>
       <p id="resultsSummary" class="text-lg mb-4">Vous avez terminé la catégorie!</p>
       <button onclick="navigate('dashboard')" class="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-600 transition">Retourner au Tableau de Bord</button>
     </div>
   </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+
+      menuToggle.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', toggleSidebar);
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+      }
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('show');
+        }
+      });
+
+      initializeUserDashboard();
+    });
+  </script>
 </body>
 </html>
