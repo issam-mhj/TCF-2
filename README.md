@@ -1,73 +1,109 @@
-# Ultimate French Language Quiz Application
+<div align="center">
+<h3 align="center">Ultimate French Language Quiz Application</h3>
 
-## Overview
-The **Ultimate French Language Quiz Application** is an interactive web app designed to help users test their proficiency in the French language. It provides a series of multiple-choice questions that cover vocabulary, grammar, and expressions, and at the end of the quiz, it displays the user's level of French knowledge (A1, B1, B2, etc.).
+  <p align="center">
+    An interactive web app to test and improve your French language skills.
+    <br />
+     <a href="https://issam-mhj.github.io/tcf-2/">issam-mhj.github.io/tcf-2/</a>
+  </p>
+</div>
 
-## Features
-- Start Screen with an introduction and a start button to begin the quiz.
-- Randomized questions to provide a unique experience every time.
-- Multiple-choice questions with immediate feedback on correctness.
-- A progress tracker indicating the current question number and total questions.
-- Score and proficiency level display at the end of the quiz.
-- Option to restart the quiz for further practice.
-- Knowledge updates to reinforce learning for each question.
+## Table of Contents
 
-## Technologies Used
-- **HTML5**: For structuring the content of the application.
-- **CSS3**: For styling the user interface and ensuring responsiveness across devices.
-- **JavaScript (Vanilla JS)**: For handling the core functionality of the quiz, including shuffling questions, tracking user answers, and updating the score.
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#key-features">Key Features</a></li>
+      </ul>
+    </li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#admin-dashboard">Admin Dashboard</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+## About The Project
+
+The **Ultimate French Language Quiz Application** is an interactive web application designed to help users test their proficiency in the French language. It offers a series of multiple-choice questions covering vocabulary, grammar, and comprehension, aligned with the TCF exam levels (A1 to C2). The application provides immediate feedback, tracks progress, and displays the user's estimated proficiency level upon completion of a quiz.  Administrators have access to a dashboard for managing questions, viewing user scores, generating reports, and analyzing general statistics.
+
+### Key Features
+
+- **Interactive Quizzes:** Engaging multiple-choice questions to test French language skills.
+- **TCF Exam Alignment:** Content tailored for TCF exam preparation, covering levels A1 to C2.
+- **Immediate Feedback:** Instant feedback on answer correctness to reinforce learning.
+- **Progress Tracking:** Visual indicators to track the user's progress through the quiz.
+- **Proficiency Level Assessment:** Estimated French proficiency level displayed at the end of each quiz.
+- **Admin Dashboard:** A dedicated admin interface for managing questions, users, and generating reports.
+- **User Authentication:** Sign-up and login functionality to track individual progress.
+- **Responsive Design:** User interface adapts to different screen sizes for optimal viewing on various devices.
+
+## Architecture
+
+The application is structured with a client-side frontend built using HTML, CSS, and JavaScript. It uses vanilla JavaScript for core functionality, including question shuffling, answer tracking, and score updates.  The application stores user data, including scores and progress, in the browser's local storage.  The admin dashboard provides interfaces for question management, user score analysis, and report generation.
+
+**Technologies Used:**
+
+*   **HTML5:** For structuring the content of the application.
+*   **CSS3:** For styling the user interface and ensuring responsiveness across devices, using Tailwind CSS in admin panel.
+*   **JavaScript (Vanilla JS):** For handling the core functionality of the quiz.
+*   **jsPDF:** For generating PDF reports in the admin dashboard.
 
 ## Getting Started
+
+To run the project locally, follow these steps:
+
 ### Prerequisites
-To run this project locally, you will need:
+
 - A modern web browser (e.g., Chrome, Firefox, Edge).
-- Git installed (optional, for cloning the repository).
+- Git (optional, for cloning the repository).
 
 ### Installation
-1. Clone the repository from GitHub:
-   ```sh
-   git clone https://github.com/yourusername/ultimate-french-quiz.git
-   ```
-2. Navigate to the project directory:
-   ```sh
-   cd ultimate-french-quiz
-   ```
-3. Open the `index.html` file in your browser:
-   ```sh
-   open index.html
-   ```
+
+1.  Clone the repository from GitHub:
+
+    ```sh
+    git clone https://github.com/issam-mhj/tcf-2.git
+    ```
+2.  Navigate to the project directory:
+
+    ```sh
+    cd tcf-2
+    ```
+3.  Open `index.html` in your browser.
 
 ## Usage
-1. Click on **Start Quiz** to begin.
-2. Answer the multiple-choice questions by selecting an option.
-3. Click **Next Question** to proceed to the next question.
-4. At the end of the quiz, view your **Score** and your estimated **Proficiency Level**.
-5. Click **Restart Quiz** if you want to attempt the quiz again.
 
-## Project Structure
-```
-ultimate-french-quiz/
-├── css/
-│   └── styles.css         # Main CSS styles
-├── js/
-│   └── script.js          # Main JavaScript functionality
-├── index.html             # Main HTML file
-└── README.md              # Project documentation
-```
+1.  **Sign Up/Login:** Create a new account or log in with an existing username on the landing page (`index.html`).
+2.  **User Dashboard:** After logging in, you will be redirected to the user dashboard (`user.html`).
+3.  **Select Level:** Choose a level (A1, A2, B1, B2, C1, C2) to start the quiz. Levels are unlocked sequentially based on your progress.
+4.  **Select Category:** Choose a category (Grammaire, Vocabulaire, Compréhension) to start the quiz.
+5.  **Take Quiz:** Answer the multiple-choice questions. A timer will run for each question.
+6.  **View Results:** After completing the quiz, your score will be displayed. If you achieve a perfect score, the next level will be unlocked.
 
-## Knowledge Updates
-After each question, a brief knowledge update is provided to help users learn more about the topic. These knowledge updates serve as instant feedback for any incorrect answers and reinforce correct responses.
+## Admin Dashboard
 
-## Contributing
-If you'd like to contribute to the development of this quiz application, feel free to fork the repository and create pull requests. Contributions can include:
-- Adding new questions to the quiz.
-- Enhancing the user interface and styling.
-- Implementing additional functionality or features.
+The admin dashboard (`admin.html`) provides the following functionalities:
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+*   **Login:** Access the dashboard using the username "admin" and password "password123" on the `loginadmin.html` page.
+*   **Question Management:** Add, edit, and delete quiz questions.
+*   **User Scores:** View and search user scores.
+*   **General Statistics:** View success rates and attempts per level.
+*   **Report Generation:** Generate PDF reports for individual users.
 
-## Contact
-If you have any questions or feedback, you can reach out to the project owner at [your-email@example.com].
+To access different sections of the admin dashboard, use the navigation buttons in the sidebar:
 
-Happy learning, and enjoy testing your French skills! 🎉
+*   **Gestion des Questions:** Manage quiz questions.
+*   **Tableau des Scores:** View user scores.
+*   **Statistiques Générales:** View general statistics.
+*   **Générer Rapports:** Generate PDF reports.
